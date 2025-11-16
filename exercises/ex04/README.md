@@ -177,7 +177,7 @@
 - behavior implementation에서 이를 구현했으며,
 - 향상된 Fiori elements 앱을 미리보고 테스트했습니다.
 
-다음 연습으로 계속 진행할 수 있습니다 – **[연습 5: BO Behavior 향상 – Validations](../ex05/README.md)**
+다음 연습으로 계속 진행할 수 있습니다 – **[연습문제 5: BO 기능 개선 – Validations](../ex05/README.md)**
 
 ---
 <!--
