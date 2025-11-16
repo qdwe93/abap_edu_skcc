@@ -5,7 +5,7 @@
 
 ## 소개
 
-> ℹ️ 업데이트된 스크립트가 포함된 새로운 RAP100 GitHub 저장소에 여기 👉 [**here**](https://github.com/SAP-samples/abap-platform-rap100)에서 액세스하세요.
+> ℹ️ 업데이트된 스크립트가 포함된 새로운 RAP100 GitHub 저장소에 여기 👉[**here**](https://github.com/SAP-samples/abap-platform-rap100)에서 액세스하세요.
 
 이 문서의 스크린샷은 group ID **`000`** 과 system **`D22`** 를 사용하여 촬영되었습니다. group ID **`000`** 의 사용은 **권장하지 않습니다**.
 
@@ -40,7 +40,7 @@
 > group ID는 이 워크숍의 여러 실습에서 placeholder **`###`** 의 모든 발생을 대체하는 데 사용됩니다.
 >
 > ⚠ **참고:** ⚠
-> SAP 팀에서 group ID를 할당받은 경우, 이 섹션을 건너뛰고 다음 섹션으로 바로 이동하여 ADT에서 _ABAP Cloud Project_ 또는 _ABAP Project_를 생성하십시오.
+> SAP 팀에서 group ID를 할당받은 경우, 이 섹션을 건너뛰고 다음 섹션으로 바로 이동하여 ADT에서 _ABAP Cloud Project_ 또는 _ABAP Project_ 를 생성하십시오.
 
 <details>
   <summary>확장하려면 클릭하세요!</summary>
@@ -60,7 +60,7 @@ group ID **`000`** 의 사용은 **권장하지 않습니다**. 예를 들어, �
   ![determine group id](images/groupid01.png)
   <!-- <img src="images/groupid01.png" alt="determine group id" width="30%"> -->
 
-_**No results**_는 이 group ID가 사용 가능하다는 것을 의미합니다. 이 ID를 어딘가에 group ID로 기록해 두고 다음 실습에서 사용할 수 있습니다.
+_**No results**_ 는 이 group ID가 사용 가능하다는 것을 의미합니다. 이 ID를 어딘가에 group ID로 기록해 두고 다음 실습에서 사용할 수 있습니다.
 
 사용 가능한 group ID를 찾았으면 **Cancel**을 선택합니다.
 
@@ -68,9 +68,9 @@ _**No results**_는 이 group ID가 사용 가능하다는 것을 의미합니�
 
 ## ADT에서 _ABAP Cloud Project_ 또는 _ABAP Project_ 생성
 
-> 이 단계에서는 ADT 설치에서 ABAP system에 대한 연결을 생성합니다. 이를 위해 _**ABAP Project**_ 또는 _**ABAP Cloud Project**_를 생성해야 합니다.
+> 이 단계에서는 ADT 설치에서 ABAP system에 대한 연결을 생성합니다. 이를 위해 _**ABAP Project**_ 또는 _**ABAP Cloud Project**_ 를 생성해야 합니다.
 >
-> SAP S/4HANA, on-prem 또는 private cloud edition에서 작업하는 경우 ADT에서 _**ABAP Project**_를 생성해야 합니다. 그렇지 않고 *SAP BTP ABAP Environment system* 또는 *SAP S/4HANA Cloud, public edition, system*에서 작업하는 경우 _**ABAP Cloud Project**_를 생성하십시오.
+> SAP S/4HANA, on-prem 또는 private cloud edition에서 작업하는 경우 ADT에서 _**ABAP Project**_ 를 생성해야 합니다. 그렇지 않고 *SAP BTP ABAP Environment system* 또는 *SAP S/4HANA Cloud, public edition, system*에서 작업하는 경우 _**ABAP Cloud Project**_ 를 생성하십시오.
 >
 > ⚠ **참고:** ⚠
 > ABAP Development Tools for Eclipse(ADT)에서 이미 *ABAP Cloud Project* 또는 *ABAP Project*를 생성한 경우 이 섹션을 건너뛰십시오.
@@ -78,7 +78,7 @@ _**No results**_는 이 group ID가 사용 가능하다는 것을 의미합니�
 ### ADT에서 _ABAP Cloud Project_ 생성
 [^Top of page](#)
 
-> ADT 설치에서 _**ABAP Cloud Project**_를 생성하여 *SAP BTP ABAP Environment* 또는 *SAP S/4HANA Cloud (public edition)* system에 연결합니다.
+> ADT 설치에서 _**ABAP Cloud Project**_ 를 생성하여 *SAP BTP ABAP Environment* 또는 *SAP S/4HANA Cloud (public edition)* system에 연결합니다.
 >
 > ⚠️ _SAP S/4HANA system, on-prem 또는 private cloud edition_(CAL instances 포함)에서 작업하는 경우 이 단계를 건너뛰십시오.
 
@@ -89,7 +89,7 @@ _**No results**_는 이 group ID가 사용 가능하다는 것을 의미합니�
 
     ![Open ABAP Perspective](images/abap_perspective.png)
 
-2. 이제 아래 제공된 스크린샷과 같이 _**ABAP Cloud Project**_를 생성합니다.
+2. 이제 아래 제공된 스크린샷과 같이 _**ABAP Cloud Project**_ 를 생성합니다.
 
     ![Create ABAP Project Cloud 1/2](images/steampunk_systemlogon1.png)
 
@@ -100,9 +100,9 @@ _**No results**_는 이 group ID가 사용 가능하다는 것을 의미합니�
 ### ADT에서 _ABAP Project_ 생성
 [^Top of page](#)
 
-> ADT 설치에서 _**ABAP Project**_를 생성하여 CAL Instances를 포함한 *SAP S/4HANA system, on-prem 또는 private cloud edition* system에 연결합니다.
+> ADT 설치에서 _**ABAP Project**_ 를 생성하여 CAL Instances를 포함한 *SAP S/4HANA system, on-prem 또는 private cloud edition* system에 연결합니다.
 >
-> ⚠️ _SAP BTP ABAP Environment_ 또는 _SAP S/4HANA Cloud, public edition_에서 작업하는 경우 이 단계를 건너뛰십시오.
+> ⚠️ _SAP BTP ABAP Environment_ 또는 _SAP S/4HANA Cloud, public edition_ 에서 작업하는 경우 이 단계를 건너뛰십시오.
 
 <details>
   <summary>확장하려면 클릭하세요!</summary>
@@ -111,7 +111,7 @@ _**No results**_는 이 group ID가 사용 가능하다는 것을 의미합니�
 
     ![Open ABAP Perspective](images/abap_perspective.png)
 
-2. 이제 아래 제공된 스크린샷과 같이 _**ABAP Project**_를 생성합니다.
+2. 이제 아래 제공된 스크린샷과 같이 _**ABAP Project**_ 를 생성합니다.
   
   SAP 이벤트 팀에서 제공한 system information(SID, System IP, 및 Instance number)을 입력합니다.
 
