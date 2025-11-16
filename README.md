@@ -107,20 +107,20 @@ RAP를 사용하여 처음부터 트랜잭션 처리가 가능하고 draft 기�
 | 연습문제 | -- |
 | ------------- |  -- |
 | [시작하기 (Getting Started)](exercises/ex0/README.md) | -- |
-| [연습문제 1: 데이터베이스 테이블 생성 및 UI 서비스 생성하기](exercises/ex01/README.md) | -- |
-| [연습문제 2: BO 데이터 모델 향상 및 OData Streams 활성화하기](exercises/ex02/README.md) | -- |
-| [연습문제 3: BO 동작 향상시키기 – Early Numbering](exercises/ex03/README.md) | -- |
-| [연습문제 4: BO 동작 향상시키기 – Determinations](exercises/ex04/README.md) | -- |
-| [연습문제 5: BO 동작 향상시키기 – Validations](exercises/ex05/README.md) | -- |
+| [연습문제 1: 데이터베이스 테이블 생성 및 UI 서비스 생성](exercises/ex01/README.md) | -- |
+| [연습문제 2: BO 데이터 모델 향상 및 OData Streams 활성화](exercises/ex02/README.md) | -- |
+| [연습문제 3: BO 기능 개선 – Early Numbering](exercises/ex03/README.md) | -- |
+| [연습문제 4: BO 기능 개선 – Determinations](exercises/ex04/README.md) | -- |
+| [연습문제 5: BO 기능 개선 – Validations](exercises/ex05/README.md) | -- |
 
 #### 중급 레벨
 아래 연습문제들은 _초급 레벨_ 섹션의 연습문제 1부터 5까지를 기반으로 합니다.
 
 | 연습문제 | -- |
 | ------------- |  -- |
-| [연습문제 6: BO 동작 향상시키기 – Actions](exercises/ex06/README.md) | -- |
-| [연습문제 7: BO 동작 향상시키기 – Dynamic Feature Control](exercises/ex07/README.md) | -- |
-| [연습문제 8: RAP BO를 위한 ABAP Unit Test 작성하기](exercises/ex08/README.md) | -- |
+| [연습문제 6: BO 기능 개선 – Actions](exercises/ex06/README.md) | -- |
+| [연습문제 7: BO 기능 개선 – Dynamic Feature Control](exercises/ex07/README.md) | -- |
+| [연습문제 8: RAP BO를 위한 ABAP Unit Test 작성](exercises/ex08/README.md) | -- |
 | [연습문제 9: EML을 이용한 RAP BO 외부 API 기반 접근](exercises/ex09/README.md) | -- |
 
 #### 추가 연습문제:
