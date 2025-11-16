@@ -1,6 +1,6 @@
 [Home - RAP100](../../#exercises)
 
-# Exercise 1: 데이터베이스 테이블 생성 및 UI 서비스 생성
+# 연습문제 1: 데이터베이스 테이블 생성 및 UI 서비스 생성
 
 ## 소개
 
@@ -504,7 +504,7 @@
 - transactional UI service를 생성했고,
 - 로컬 service point를 게시하고 ADT에서 _Fiori elements App Preview_ 를 시작했습니다.
 
-이제 다음 연습으로 넘어갈 수 있습니다 - **[Exercise 2: BO 데이터 모델 향상 및 OData 스트림 활성화](../ex02/README.md)**.
+이제 다음 연습으로 넘어갈 수 있습니다 - **[연습문제 2: BO 데이터 모델 개선 및 OData Streams 활성화](../ex02/README.md)**.
 
 ---
 
