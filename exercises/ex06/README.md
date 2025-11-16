@@ -46,7 +46,7 @@
 > ℹ **추가 정보**: [RAP BO Contract](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/3a402c5cf6a74bc1a1de080b2a7c6978.html) **|** [RAP BO Provider API (derived types, %cid, implicit response parameters,...)](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/2a3da8a5b19e4f6b953e9a11fb5cc747.html?version=Cloud)
 
 
-## 연습문제 6.1: Instance-bound Action `deductDiscount` 추가하기
+## Exercise 6.1: Instance-bound Action `deductDiscount` 추가하기
 [^맨 위로](#introduction)
 
 > 이제 non-factory instance-bound action인 **`deductDiscount`** 를 정의, 구현 및 노출할 것입니다. 이 액션은 자기 자신을 반환하며, _Travel_ 인스턴스의 **`BookingFee`** 에서 특정 비율을 차감하는 기능을 제공합니다.
@@ -55,7 +55,7 @@
 >
 > 이번 연습문제에서는 입력 파라미터가 없는 액션과 있는 액션 두 가지 구현 방식에 모두 익숙해질 것입니다.
 
-### 연습문제 6.1.1: 인스턴스 액션 정의하기
+### Exercise 6.1.1: 인스턴스 액션 정의하기
 
 > 먼저, _Travel_ 엔티티의 Behavior Definition에서 입력 파라미터가 없는 non-factory 인스턴스 액션 **`deductDiscount`** 를 정의합니다.
 
@@ -127,7 +127,7 @@
 
    </details>
 
-### 연습문제 6.1.2: 액션 메소드 구현하기
+### Exercise 6.1.2: 액션 메소드 구현하기
 
 > 이제 _Travel_ 엔티티의 Behavior Pool에 있는 적절한 메소드에서 액션 Behavior를 구현합니다.
 
@@ -209,7 +209,7 @@
 
 </details>
 
-### 연습문제 6.1.3: 액션 노출 및 테스트하기
+### Exercise 6.1.3: 액션 노출 및 테스트하기
 
 > 지정된 트리거 시간에 RAP 런타임에 의해 자동으로 호출되는 Determination 및 Validation과 달리, Action은 BO Projection 레이어에서 명시적으로 노출되고 UI나 EML 구문을 통해 직접 소비자에 의해 호출되어야 합니다.
 >
@@ -275,7 +275,7 @@
 </details>
 
 
-### 연습문제 6.1.4: 입력 파라미터 추가하기
+### Exercise 6.1.4: 입력 파라미터 추가하기
 [^맨 위로](#introduction)
 
 > 최종 사용자나 호출하는 API가 런타임에 _Travel_ 인스턴스의 예약 수수료(**`BookingFee`**)에서 차감할 비율을 자유롭게 지정할 수 있도록 액션 **`deductDiscount`** 에 입력 파라미터(**`discount_percent`**)를 추가할 것입니다.
@@ -315,7 +315,7 @@
 </details>
 
 
-### 연습문제 6.1.5: 액션 메소드 조정하기
+### Exercise 6.1.5: 액션 메소드 조정하기
 
 > 이제 Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 에서 입력 파라미터 **`deduct_discount`** 를 사용하는 인스턴스 non-factory 액션 **`deductDiscount`** 의 비즈니스 로직 구현을 조정할 것입니다.
 >
@@ -416,7 +416,7 @@
 
 </details>
 
-### 연습문제 6.1.6: 파라미터가 있는 액션 테스트하기
+### Exercise 6.1.6: 파라미터가 있는 액션 테스트하기
 
 > 이제 향상된 _Travel_ 앱에서 _**Deduct Discount**_ 액션 버튼의 새로운 동작을 테스트할 수 있습니다.
 
@@ -441,12 +441,12 @@
 
 </details>
 
-## 연습문제 6.2: Instance-bound Factory Action `copyTravel` 추가하기
+## Exercise 6.2: Instance-bound Factory Action `copyTravel` 추가하기
 [^맨 위로](#introduction)
 
 > 이제 하나 이상의 `travel` 인스턴스를 복사하고 복사된 데이터를 기반으로 새 인스턴스를 생성하는 데 사용되는 instance-bound factory action인 **`copyTravel`** 을 정의, 구현 및 노출할 것입니다. 새로운 travel ID는 unmanaged internal early numbering에 의해 새 travel 인스턴스에 할당됩니다.
 
-### 연습문제 6.2.1: Factory Action 정의하기
+### Exercise 6.2.1: Factory Action 정의하기
 
 > Behavior Definition에서 인스턴스 factory action **`copyTravel`** 을 정의합니다.
 
@@ -477,7 +477,7 @@
 
 </details>
 
-### 연습문제 6.2.2: Factory Action 구현하기
+### Exercise 6.2.2: Factory Action 구현하기
 
 > 기본 BO Behavior Pool에서 인스턴스 factory action **`coyTravel`** 을 구현합니다.
 
@@ -574,7 +574,7 @@
 
 </details>
 
-### 연습문제 6.2.3: Factory Action 노출 및 테스트하기
+### Exercise 6.2.3: Factory Action 노출 및 테스트하기
 
 > BO Behavior Projection과 CDS Metadata Extension에서 인스턴스 factory action을 노출하고, 향상된 Fiori elements 앱을 테스트합니다.
 
@@ -640,7 +640,7 @@
 >
 > 시간이 부족하다면 다음 연습문제로 넘어가거나 [**부록** 섹션](#Appendix)에 제공된 솔루션 객체에서 소스 코드를 복사하는 것을 권장합니다.
 
-### 연습문제 6.3.1: 액션 정의하기
+### Exercise 6.3.1: 액션 정의하기
 
 > 먼저, _Travel_ 엔티티의 Behavior Definition에서 인스턴스 non-factory action인 **`acceptTravel`** 과 **`rejectTravel`** 을 정의합니다.
 
@@ -672,7 +672,7 @@
 
    </details>
 
-### 연습문제 6.3.2: 액션 메소드 구현하기
+### Exercise 6.3.2: 액션 메소드 구현하기
 
 > 이제 _Travel_ 엔티티의 Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 에서 필요한 액션 메소드를 구현합니다.
 
@@ -774,7 +774,7 @@
 </details>
 
 
-### 연습문제 6.3.3: 액션 노출 및 테스트하기
+### Exercise 6.3.3: 액션 노출 및 테스트하기
 > 이제 BO Behavior Projection에서 액션을 노출하고, CDS Metadata Extension에서 UI 시맨틱을 강화하여 _Travel_ 앱에 적절한 버튼을 추가할 것입니다.
 
  <details>
