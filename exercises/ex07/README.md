@@ -19,7 +19,7 @@
 > 
 > ℹ **추가 정보**: [Adding Static and Dynamic Feature Control](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/b6eb96dd784247a99cf8d70f77232ba4.html)
 
-## 연습문제 7.1: Dynamic Instance Feature Control 정의하기
+## Exercise 7.1: Dynamic Instance Feature Control 정의하기
 [^Top of page](#)
 
 > Standard operation인 **`update`** 와 **`delete`**, draft action인 **`Edit`**, 그리고 instance action인 **`deductDiscount`** 에 대한 dynamic instance feature control을 정의합니다.
@@ -87,7 +87,7 @@
  
 </details>
 
-## 연습문제 7.2: Dynamic Instance Feature Control 구현하기 
+## Exercise 7.2: Dynamic Instance Feature Control 구현하기 
 [^Top of page](#)
 
 > Standard operation인 **`update`** 와 **`delete`**, draft action인 **`Edit`**, 그리고 instance action인 **`deductDiscount`** 에 대한 dynamic instance feature control을 구현합니다.
@@ -164,7 +164,7 @@
  
  </details>
  
-## 연습문제 7.3: 개선된 Travel 앱 미리보기 및 테스트
+## Exercise 7.3: 개선된 Travel 앱 미리보기 및 테스트
 [^Top of page](#)
 
 이제 SAP Fiori elements 앱을 테스트할 수 있습니다. 
