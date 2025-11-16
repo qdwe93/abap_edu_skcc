@@ -1,6 +1,6 @@
 [홈 - RAP100](../../#exercises)
 
-# Exercise 3: BO Behavior 향상 – Early Numbering
+# 연습문제 3: BO 기능 개선 – Early Numbering
 
 ## 소개
 
@@ -274,7 +274,7 @@
 - early numbering을 구현했으며,
 - 향상된 Fiori elements 앱을 미리 보고 테스트했습니다.
 
-다음 Exercise로 계속 진행할 수 있습니다 – **[Exercise 4: BO Behavior 향상 – Determinations](../ex04/README.md)**
+다음 Exercise로 계속 진행할 수 있습니다 – **[연습문제 4: BO 기능 개선 – Determinations](../ex04/README.md)**
 
 ---
 
