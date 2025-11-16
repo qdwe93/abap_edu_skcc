@@ -1,122 +1,121 @@
 [Home - RAP100](../../#exercises)
 
-# Exercise 4: Enhance the BO Behavior – Determinations
+# 연습문제 4: BO 기능 개선 – Determinations
 
-## Introduction
+## 소개
 
-In the previous exercise, you've defined and implemented the early numbering for assigning automatically an identifier (ID) for a new instance of the BO entity _Travel_ (see [Exercise 3](../ex03/README.md)).
+이전 연습에서는 BO 엔터티 _Travel_ 의 새 인스턴스에 대한 식별자(ID)를 자동으로 할당하기 위해 early numbering을 정의하고 구현했습니다(참조: [연습 3](../ex03/README.md)).
 
-In the present exercise, you will  define and implement a determination, `setStatusToOpen`, which will be used to set a default value for the overall status of a _Travel_ entity instance. You will use the Entity Manipulation Language (EML) to implement the transactional behavior of the _Travel_ business object. 
+이번 연습에서는 _Travel_ 엔터티 인스턴스의 전체 상태에 대한 기본값을 설정하는 데 사용될 determination, `setStatusToOpen`을 정의하고 구현할 것입니다. 여러분은 Entity Manipulation Language (EML)를 사용하여 _Travel_ 비즈니스 오브젝트의 트랜잭션 behavior를 구현하게 됩니다.
 
-- [4.1 - Define the Determination `setStatusToOpen`](#exercise-41-define-the-determination-setstatustoopen)
-- [4.2 - Implement the Determination `setStatusToOpen`](#exercise-42-implement-the-determination-setstatustoopen)
-- [4.3 - Preview and Test the Enhanced Travel App](#exercise-43-preview-and-test-the-enhanced-travel-app)
-- [Summary](#summary)  
+- [4.1 - Determination `setStatusToOpen` 정의하기](#exercise-41-define-the-determination-setstatustoopen)
+- [4.2 - Determination `setStatusToOpen` 구현하기](#exercise-42-implement-the-determination-setstatustoopen)
+- [4.3 - 향상된 Travel 앱 미리보기 및 테스트](#exercise-43-preview-and-test-the-enhanced-travel-app)
+- [요약](#summary)
 
 
-> **Reminder**: Do not forget to replace the suffix placeholder **`###`** with your choosen or assigned group ID in the exercise steps below. 
+> **알림**: 아래 연습 단계에서 접미사 플레이스홀더 **`###`** 를 여러분이 선택했거나 할당받은 그룹 ID로 반드시 교체하십시오.
 
-### About Determinations  
-> A determination is an optional part of the business object behavior that modifies instances of business objects based on trigger conditions. A determination is implicitly invoked by the RAP framework if the trigger condition of the determination is fulfilled. Trigger conditions can be modify operations and modified fields.   
->  
-> **Further reading**: [Determinations](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/6edb0438d3e14d18b3c403c406fbe209.html)
-
-### About Entity Manipulation Language (EML)
-> The Entity Manipulation Language (EML) is an extension of the ABAP language which offers an API-based access to RAP business objects. EML is used to implement the transactional behavior of RAP BOs and also access existing RAP BOs from outside the RAP context.   
-> 
-> PS: Some EML statements can be used in the so-called local mode - by using the [addition **`IN LOCAL MODE`**](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abapin_local_mode.htm) - to exclude feature controls and authorization checks. This addition can only be used in the behavior implementation (aka behavior pool) of a particular RAP BO when accessing its own instances, i. e. not for accessing instances of other RAP BOs.
+### Determinations에 대하여
+> Determination은 트리거 조건에 따라 비즈니스 오브젝트의 인스턴스를 수정하는 비즈니스 오브젝트 behavior의 선택적 부분입니다. Determination의 트리거 조건이 충족되면 RAP 프레임워크에 의해 암시적으로 호출됩니다. 트리거 조건은 modify 작업과 수정된 필드가 될 수 있습니다.
 >
-> The EML reference documentation is provided in the ABAP Keyword Documentation.   
-> You can use the classic **F1 Help** to get detailed information on each statement by pressing **F1** in the ABAP editors. 
+> **추가 정보**: [Determinations](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/6edb0438d3e14d18b3c403c406fbe209.html)
+
+### Entity Manipulation Language (EML)에 대하여
+> Entity Manipulation Language (EML)는 RAP 비즈니스 오브젝트에 대한 API 기반 접근을 제공하는 ABAP 언어의 확장입니다. EML은 RAP BO의 트랜잭션 behavior를 구현하고 RAP 컨텍스트 외부에서 기존 RAP BO에 접근하는 데 사용됩니다.
 >
-> **Further reading**: [Entity Manipulation Language (EML)](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/af7782de6b9140e29a24eae607bf4138.html) | [ABAP for RAP Business Objects](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenabap_for_rap_bos.htm) 
+> PS: 일부 EML 구문은 소위 local mode에서 사용할 수 있습니다 - [**`IN LOCAL MODE`** 추가 구문](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abapin_local_mode.htm)을 사용하여 - 기능 제어 및 권한 검사를 제외할 수 있습니다. 이 추가 구문은 특정 RAP BO의 behavior implementation(일명 behavior pool)에서 자체 인스턴스에 접근할 때만 사용할 수 있으며, 다른 RAP BO의 인스턴스에 접근하는 데는 사용할 수 없습니다.
+>
+> EML 참조 문서는 ABAP Keyword Documentation에서 제공됩니다.
+> ABAP 편집기에서 **F1** 키를 눌러 클래식 **F1 Help** 를 사용하여 각 구문에 대한 자세한 정보를 얻을 수 있습니다.
+>
+> **추가 정보**: [Entity Manipulation Language (EML)](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/af7782de6b9140e29a24eae607bf4138.html) | [ABAP for RAP Business Objects](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenabap_for_rap_bos.htm)
 
-## Exercise 4.1: Define the Determination `setStatusToOpen`
-[^Top of page](#)
+## 연습 4.1: Determination `setStatusToOpen` 정의하기
+[^맨 위로](#)
 
-> Define the determination **`setStatusToOpen`** in the behavior definition of the _Travel_ entity. This determination will be used to set the default value of the field `OverallStatus` to `open` (`O`) at the creation time new _Travel_ instances.
+> _Travel_ 엔터티의 behavior definition에서 determination **`setStatusToOpen`** 을 정의합니다. 이 determination은 새로운 _Travel_ 인스턴스를 생성할 때 `OverallStatus` 필드의 기본값을 `open` (`O`)으로 설정하는 데 사용됩니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. Go to the behavior definiton of the _Travel_ BO entity ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TravelTP_###`** and insert the following statement after the statement **`delete;`** as shown on the screenshot below: 
+1. _Travel_ BO 엔터티의 behavior definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TravelTP_###`** 로 이동하여 **`delete;`** 구문 뒤에 아래 스크린샷과 같이 다음 구문을 삽입하십시오.
 
-   ```ABAP 
+   ```ABAP
      determination setStatusToOpen on modify { create; }
    ```
-   
-   <!-- ![Travel BO Definition](images/new14.png) -->
-   <img src="images/new14.png" alt="Travel BO Definition" width="60%"> 
-   
-   **Short explanation**:  
-   The statement specifies the name of the new determination, `setStatusToOpen` and `on modify` as the determination time when creating new _travel_ instance (`{ create }`).
-   
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.   
 
-3. Now, declare the required method in behavior implementation class with ADT Quick Fix.
-  
-   Set the cursor on the determination name **`setStatusToOpen`** and press **Ctrl+1** to open the **Quick Assist** view and select the entry _`Add method for determination setstatustoopen of entity zrap100_r_travel_### ...`_ in the view.
-   
-   As result, the `FOR DETERMINE` method **`setStatusToOpen`** will be added to the local handler class **`lcl_handler`** of the behavior pool of the _Travel_ BO entity ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**.
-         
+   <!-- ![Travel BO Definition](images/new14.png) -->
+   <img src="images/new14.png" alt="Travel BO Definition" width="60%">
+
+   **간단한 설명**:
+   이 구문은 새로운 determination의 이름 `setStatusToOpen`과 새로운 _travel_ 인스턴스를 생성할 때(`{ create }`)의 determination 시간으로 `on modify`를 지정합니다.
+
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))하십시오.
+
+3. 이제 ADT Quick Fix를 사용하여 behavior implementation 클래스에 필요한 메서드를 선언합니다.
+
+   determination 이름 **`setStatusToOpen`** 에 커서를 놓고 **Ctrl+1** 을 눌러 **Quick Assist** 뷰를 연 다음, 뷰에서 _`Add method for determination setstatustoopen of entity zrap100_r_travel_### ...`_ 항목을 선택하십시오.
+
+   그 결과, `FOR DETERMINE` 메서드 **`setStatusToOpen`** 이 _Travel_ BO 엔터티의 behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 의 로컬 핸들러 클래스 **`lcl_handler`** 에 추가됩니다.
+
    <!-- ![Travel BO Behavior Pool](images/new15.png) -->
-   <img src="images/new15.png" alt="Travel BO Behavior Pool" width="60%">  
-   
-You are through with the definition of the determination.
+   <img src="images/new15.png" alt="Travel BO Behavior Pool" width="60%">
+
+이제 determination의 정의를 마쳤습니다.
 
 </details>
 
-## Exercise 4.2: Implement the Determination `setStatusToOpen` 
-[^Top of page](#)
+## 연습 4.2: Determination `setStatusToOpen` 구현하기
+[^맨 위로](#)
 
-You will now implement the logic of the defined determination in the behavior pool. 
+이제 정의된 determination의 로직을 behavior pool에서 구현합니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. First check the interface of the method **`setStatusToOpen`** in the declaration part of the local handler class `lcl_handler`. 
+1. 먼저 로컬 핸들러 클래스 `lcl_handler`의 선언부에서 메서드 **`setStatusToOpen`** 의 인터페이스를 확인하십시오.
 
-   For that, set the cursor on the method name, **`setStatusToOpen`**, press **F2** to open the **ABAP Element Info** view, and examine the full method interface. 
-   
-   ![Travel BO Behavior Pool](images/new16.png)  
-   
-   **Short explanation**:  
-   - The addition **`FOR DETERMINE`** indicates that the method provides the implementation of a determination and the addition **`ON MODIFY`** indicates the specified trigger time.
-   - `IMPORTING`parameter **`keys`** - an internal table containing the keys of the instances the determination will be executed on 
-   all entities for which keys must be assigned    
-   - Implicit **`CHANGING`** parameter **`reported`** - used to return messages in case of failure   
-         
-    Now go ahead and implement the method in the implementation part of the local handler class.
+   메서드 이름 **`setStatusToOpen`** 에 커서를 놓고 **F2** 를 눌러 **ABAP Element Info** 뷰를 열어 전체 메서드 인터페이스를 살펴보십시오.
 
-2.  Define the local constant **`travel_status`** to store the allowed value of the overall status of a _Travel_ instance. 
-    
-    Insert the following code snippet in the definition part of the local handler class **`lcl_handler`** as shown on the screenshot below.
-    
+   ![Travel BO Behavior Pool](images/new16.png)
+
+   **간단한 설명**:
+   - **`FOR DETERMINE`** 추가 구문은 이 메서드가 determination의 구현을 제공함을 나타내고, **`ON MODIFY`** 추가 구문은 지정된 트리거 시간을 나타냅니다.
+   - `IMPORTING` 파라미터 **`keys`** - determination이 실행될 인스턴스의 키를 포함하는 인터널 테이블입니다.
+   - 암시적 **`CHANGING`** 파라미터 **`reported`** - 실패 시 메시지를 반환하는 데 사용됩니다.
+
+    이제 로컬 핸들러 클래스의 구현부에서 메서드를 구현해 보겠습니다.
+
+2. _Travel_ 인스턴스의 전체 상태에 허용된 값을 저장하기 위해 로컬 상수 **`travel_status`** 를 정의합니다.
+
+    아래 스크린샷과 같이 로컬 핸들러 클래스 **`lcl_handler`** 의 정의부에 다음 코드 스니펫을 삽입하십시오.
+
     ```ABAP
     CONSTANTS:
       BEGIN OF travel_status,
         open     TYPE c LENGTH 1 VALUE 'O', "Open
         accepted TYPE c LENGTH 1 VALUE 'A', "Accepted
         rejected TYPE c LENGTH 1 VALUE 'X', "Rejected
-      END OF travel_status.    
+      END OF travel_status.
     ```
 
     ![Travel BO Behavior Pool](images/s3.png)
 
-3. Now implement the method **`setStatusToOpen`** in the implementation part of the class.
-   
-   The logic consists of the following steps:    
-     1. Read the travel instance(s) of the transferred keys (**`keys`**) using the EML statement **`READ ENTITIES`**   
-     2. The addition **`IN LOCAL MODE`** is used to exclude feature controls and authorization checks   
-     3. Removed all _Travel_ instances where the overall status is already set     
-     4. Set the overall status to **`open`** (**`O`**) for the remaining entries using the EML statement **`MODIFY ENTITIES`**   
-     5. Set the changing parameter **`reported`**   
+3. 이제 클래스의 구현부에서 **`setStatusToOpen`** 메서드를 구현합니다.
 
-   Insert the following code snippet in the method and replace all occurrences of the placeholder `###` with your group ID.   
-   You can use the **F1 help** to get detailed information on each EML statement.
- 
-   Format your source code with the **ABAP Pretty Printer** (**Shift+F1**).
-   
+   로직은 다음 단계로 구성됩니다:
+     1. EML 구문 **`READ ENTITIES`** 를 사용하여 전달된 키(**`keys`**)의 travel 인스턴스를 읽습니다.
+     2. **`IN LOCAL MODE`** 추가 구문은 기능 제어 및 권한 검사를 제외하는 데 사용됩니다.
+     3. 전체 상태가 이미 설정된 _Travel_ 인스턴스는 모두 제거합니다.
+     4. EML 구문 **`MODIFY ENTITIES`** 를 사용하여 나머지 항목의 전체 상태를 **`open`**(**`O`**)으로 설정합니다.
+     5. changing 파라미터 **`reported`** 를 설정합니다.
+
+   메서드에 다음 코드 스니펫을 삽입하고 모든 플레이스홀더 `###`를 자신의 그룹 ID로 교체하십시오.
+   **F1 help** 를 사용하여 각 EML 구문에 대한 자세한 정보를 얻을 수 있습니다.
+
+   **ABAP Pretty Printer**(**Shift+F1**)를 사용하여 소스 코드 서식을 지정하십시오.
+
    ```ABAP
     "Read travel instances of the transferred keys
     READ ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
@@ -125,11 +124,11 @@ You will now implement the logic of the defined determination in the behavior po
        WITH CORRESPONDING #( keys )
      RESULT DATA(travels)
      FAILED DATA(read_failed).
- 
-    "If overall travel status is already set, do nothing, i.e. remove such instances  
-    DELETE travels WHERE OverallStatus IS NOT INITIAL.     
+
+    "If overall travel status is already set, do nothing, i.e. remove such instances
+    DELETE travels WHERE OverallStatus IS NOT INITIAL.
     CHECK travels IS NOT INITIAL.
-    
+
     "else set overall travel status to open ('O')
     MODIFY ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
       ENTITY Travel
@@ -139,30 +138,30 @@ You will now implement the logic of the defined determination in the behavior po
     REPORTED DATA(update_reported).
 
     "Set the changing parameter
-    reported = CORRESPONDING #( DEEP update_reported ).   
-   ```  
-  
-   Your source code should look like this:
-   
+    reported = CORRESPONDING #( DEEP update_reported ).
+   ```
+
+   소스 코드는 다음과 같아야 합니다:
+
    ![Travel BO Behavior Pool](images/new17.png)
 
-4. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes. 
+4. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))하십시오.
 
 </details>
 
-## Exercise 4.3: Preview and Test the Enhanced Travel App
-[^Top of page](#)
+## 연습 4.3: 향상된 Travel 앱 미리보기 및 테스트
+[^맨 위로](#)
 
-> You can now preview and test the changes by creating a new travel instance in the Travel app.
+> 이제 Travel 앱에서 새로운 travel 인스턴스를 생성하여 변경 사항을 미리보고 테스트할 수 있습니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. Refresh your application in the browser using **F5** if the browser is still open   
-   or go to your service binding **`ZRAP100_UI_TRAVEL_O4_###`** and start the Fiori elements App preview for the **`Travel`** entity set.
+1. 브라우저가 아직 열려 있다면 **F5** 를 사용하여 애플리케이션을 새로고침하십시오.
+   또는 service binding **`ZRAP100_UI_TRAVEL_O4_###`** 로 이동하여 **`Travel`** 엔터티 셋에 대한 Fiori elements 앱 미리보기를 시작하십시오.
 
-2. Create a new _Travel_ instance. The overal status should now be set automatically by the logic you just implemented.   
-   The initial overall status of the created should now be set to **`open`** (**`O`**). 
+2. 새로운 _Travel_ 인스턴스를 생성하십시오. 이제 방금 구현한 로직에 의해 전체 상태가 자동으로 설정되어야 합니다.
+   생성된 인스턴스의 초기 전체 상태는 **`open`**(**`O`**)으로 설정되어야 합니다.
 
    <!-- ![Travel App Preview](images/overallstatus.png) -->
    <!--<img src="images/overallstatus.png" alt="Travel App Preview" width="80%">!-->
@@ -170,15 +169,15 @@ You will now implement the logic of the defined determination in the behavior po
 
 </details>
 
-## Summary
-[^Top of page](#)
+## 요약
+[^맨 위로](#)
 
-Now that you've... 
-- defined a determination in the behavior definition, 
-- implement it in the behavior implementation, and 
-- preview and test the enhanced Fiori elements app,
+이제 여러분은...
+- behavior definition에서 determination을 정의하고,
+- behavior implementation에서 이를 구현했으며,
+- 향상된 Fiori elements 앱을 미리보고 테스트했습니다.
 
-you can continue with the next exercise – **[Exercise 5: Enhance the BO Behavior – Validations](../ex05/README.md)**
+다음 연습으로 계속 진행할 수 있습니다 – **[연습 5: BO Behavior 향상 – Validations](../ex05/README.md)**
 
 ---
 <!--
