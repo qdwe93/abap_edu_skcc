@@ -39,7 +39,7 @@
 >
 > **추가 정보**: [EML@RAP Development Guide](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/af7782de6b9140e29a24eae607bf4138.html) | [EML@ABAP Keyword Documentation](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abeneml.htm) | [ABAP for RAP Business Objects](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenabap_for_rap_bos.htm) | [RAP BO Contract](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/3a402c5cf6a74bc1a1de080b2a7c6978.html)
 
-## 실습 9.1: ABAP 클래스 생성
+## Exercise 9.1: ABAP 클래스 생성
 [^Top of page](#)
 
 > 이 단계에서는 EML을 가지고 놀기 위해 클래스 ![class icon](images/adt_class.png)**`ZRAP100_CL_EML_###`** 를 생성합니다. 여기서 **`###`** 는 당신의 그룹 ID입니다.
@@ -106,7 +106,7 @@
 </details>
 
 
-## 실습 9.2: _Travel_ BO 엔티티 인스턴스 READ
+## Exercise 9.2: _Travel_ BO 엔티티 인스턴스 READ
 [^Top of page](#)
 
 > 클래스 ![class icon](images/adt_class.png)**`ZRAP100_CL_EML_###`** 의 메소드 **`read_travel( )`** 은 draft 또는 active Travel BO 엔티티 인스턴스를 읽는 방법에 대한 샘플 구현을 제공합니다.
@@ -150,7 +150,7 @@
 </details>
 
 
-## 실습 9.3: _Travel_ BO 엔티티 인스턴스 UPDATE
+## Exercise 9.3: _Travel_ BO 엔티티 인스턴스 UPDATE
 [^Top of page](#)
 
 > 클래스 ![class icon](images/adt_class.png)**`ZRAP100_CL_EML_###`** 의 메소드 **`update_travel( )`** 은 active Travel BO 엔티티 인스턴스를 업데이트하는 방법에 대한 샘플 구현을 제공합니다. 필드 **`Description`** 이 업데이트됩니다.
@@ -243,7 +243,7 @@
 </details>
 
 
-## 실습 9.4: _Travel_ BO 엔티티 인스턴스 CREATE
+## Exercise 9.4: _Travel_ BO 엔티티 인스턴스 CREATE
 [^Top of page](#)
 
 > 클래스 ![class icon](images/adt_class.png)**`ZRAP100_CL_EML_###`** 의 메소드 **`create_travel( )`** 은 새로운 draft 또는 active Travel BO 엔티티 인스턴스를 생성하는 방법에 대한 샘플 구현을 제공합니다. action **`rejectTravel`** 도 인스턴스에서 수행됩니다.
@@ -290,7 +290,7 @@
 </details>
 
 
-## 실습 9.5: _Travel_ BO 엔티티 인스턴스 DELETE
+## Exercise 9.5: _Travel_ BO 엔티티 인스턴스 DELETE
 [^Top of page](#)
 
 > 메소드 **`delete_travel( )`** 은 active Travel BO 엔티티 인스턴스를 삭제하는 방법에 대한 샘플 구현을 제공합니다.
@@ -338,7 +338,7 @@
 
 </details>
 
-## 실습 9.6: Draft _Travel_ BO 엔티티 인스턴스 ACTIVATE
+## Exercise 9.6: Draft _Travel_ BO 엔티티 인스턴스 ACTIVATE
 [^Top of page](#)
 
 > 메소드 **`activate_travel_draft( )`** 는 draft Travel BO 엔티티 인스턴스를 활성화하는 방법에 대한 샘플 구현을 제공합니다.
@@ -385,7 +385,7 @@
 
 </details>
 
-## 실습 9.7: Draft _Travel_ BO 엔티티 인스턴스 DISCARD
+## Exercise 9.7: Draft _Travel_ BO 엔티티 인스턴스 DISCARD
 [^Top of page](#)
 
 > 메소드 **`discard_travel_draft( )`** 는 draft Travel BO 엔티티 인스턴스를 폐기하는 방법에 대한 샘플 구현을 제공합니다.
@@ -430,7 +430,7 @@
 </details>
 
 
-## 실습 9.8: EML 가지고 놀기
+## Exercise 9.8: EML 가지고 놀기
 [^Top of page](#)
 
 제목에서 알 수 있듯이: EML을 가지고 놀아보세요!
