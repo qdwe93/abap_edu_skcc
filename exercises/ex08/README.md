@@ -47,7 +47,7 @@ ABAP Unit 테스트 메소드: **`<test method>()`** 는 테스트 대상 코드
 
 </details>
 
-## 연습 8.1: ABAP Unit Test 클래스 생성
+## Exercise 8.1: ABAP Unit Test 클래스 생성
 [^맨 위로](#)
 
 > 이전에 연습한 패키지에 테스트 클래스 ![class icon](images/adt_class.png)**`ZRAP100_TC_TRAVEL_EML_###`** 를 생성합니다.
@@ -91,7 +91,7 @@ ABAP Unit 테스트 메소드: **`<test method>()`** 는 테스트 대상 코드
 
 </details>
 
-## 연습 8.2: 테스트 클래스 정의 강화
+## Exercise 8.2: 테스트 클래스 정의 강화
 [^맨 위로](#)
 
 > 필요한 모든 메소드로 ABAP Unit 테스트 클래스 정의를 강화합니다.
@@ -149,7 +149,7 @@ ABAP Unit 테스트 메소드: **`<test method>()`** 는 테스트 대상 코드
 
  </details>
 
-## 연습 8.3: 특별 메소드 구현
+## Exercise 8.3: 특별 메소드 구현
 [^맨 위로](#)
 
 > ABAP unit 프레임워크에서 요구하는 특별 정적 메소드 **`class_setup`** 과 **`class_teardown`**, 그리고 특별 인스턴스 메소드 **`setup`** 을 구현합니다.
@@ -247,7 +247,7 @@ ABAP Unit 테스트 메소드: **`<test method>()`** 는 테스트 대상 코드
 
  </details>
 
- ## 연습 8.4: `create_with_action` 테스트 메소드 구현
+ ## Exercise 8.4: `create_with_action` 테스트 메소드 구현
 [^맨 위로](#)
 
 > BO 테스트를 구현합니다.
@@ -360,7 +360,7 @@ BO 테스트 작성을 마쳤습니다. 이제 실행해 보십시오.
  </details>
 
 
-## 연습 8.5: ABAP Unit Test 실행
+## Exercise 8.5: ABAP Unit Test 실행
 [^맨 위로](#)
 
 > 구현한 ABAP Unit 테스트를 실행합니다.
