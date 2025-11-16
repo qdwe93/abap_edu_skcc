@@ -31,7 +31,7 @@
 >
 > **추가 정보**: [Entity Manipulation Language (EML)](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/af7782de6b9140e29a24eae607bf4138.html) | [ABAP for RAP Business Objects](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenabap_for_rap_bos.htm)
 
-## 연습 4.1: Determination `setStatusToOpen` 정의하기
+## Exercise 4.1: Determination `setStatusToOpen` 정의하기
 [^맨 위로](#)
 
 > _Travel_ 엔터티의 behavior definition에서 determination **`setStatusToOpen`** 을 정의합니다. 이 determination은 새로운 _Travel_ 인스턴스를 생성할 때 `OverallStatus` 필드의 기본값을 `open` (`O`)으로 설정하는 데 사용됩니다.
@@ -66,7 +66,7 @@
 
 </details>
 
-## 연습 4.2: Determination `setStatusToOpen` 구현하기
+## Exercise 4.2: Determination `setStatusToOpen` 구현하기
 [^맨 위로](#)
 
 이제 정의된 determination의 로직을 behavior pool에서 구현합니다.
@@ -149,7 +149,7 @@
 
 </details>
 
-## 연습 4.3: 향상된 Travel 앱 미리보기 및 테스트
+## Exercise 4.3: 향상된 Travel 앱 미리보기 및 테스트
 [^맨 위로](#)
 
 > 이제 Travel 앱에서 새로운 travel 인스턴스를 생성하여 변경 사항을 미리보고 테스트할 수 있습니다.
