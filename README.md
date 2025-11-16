@@ -108,7 +108,7 @@ RAP를 사용하여 처음부터 트랜잭션 처리가 가능하고 draft 기�
 | ------------- |  -- |
 | [시작하기 (Getting Started)](exercises/ex0/README.md) | -- |
 | [연습문제 1: 데이터베이스 테이블 생성 및 UI 서비스 생성](exercises/ex01/README.md) | -- |
-| [연습문제 2: BO 데이터 모델 향상 및 OData Streams 활성화](exercises/ex02/README.md) | -- |
+| [연습문제 2: BO 데이터 모델 개선 및 OData Streams 활성화](exercises/ex02/README.md) | -- |
 | [연습문제 3: BO 기능 개선 – Early Numbering](exercises/ex03/README.md) | -- |
 | [연습문제 4: BO 기능 개선 – Determinations](exercises/ex04/README.md) | -- |
 | [연습문제 5: BO 기능 개선 – Validations](exercises/ex05/README.md) | -- |
