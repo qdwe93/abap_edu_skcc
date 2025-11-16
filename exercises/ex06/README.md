@@ -1,256 +1,254 @@
 [Home - RAP100](../../#exercises)
 
-# \[optional\] Exercises 6: Enhance the BO Behavior – Actions 
+# [선택사항] 연습문제 6: BO 기능 개선 – Actions
 
-## Introduction
+## 소개
 
-In the previous exercise, you've defined and implemented two validations (see [Exercise 5](../ex05/README.md)).
+이전 연습문제에서는 두 개의 Validation을 정의하고 구현했습니다 (참조: [연습문제 5](../ex05/README.md)).
 
-In the present exercise, you will learn how to add different instance-bound actions (aka instance actions) to your application.
-First you will create a non-factory, instance action **`deductDiscount`**, without and with input parameter, to determine the discounted booking fee of a _travel_ instance and the factory instance action **`copyTravel`** to copy a _Travel_ instance. 
+이번 연습문제에서는 애플리케이션에 다양한 Instance-bound Action (인스턴스 액션)을 추가하는 방법을 배우게 됩니다.
+먼저, _Travel_ 인스턴스의 할인된 예약 수수료를 결정하기 위해 입력 파라미터가 없는 경우와 있는 경우의 non-factory 인스턴스 액션 **`deductDiscount`** 를 생성하고, _Travel_ 인스턴스를 복사하기 위한 factory 인스턴스 액션 **`copyTravel`** 을 생성합니다.
 
-As *optional* exercises, you can additionally implement the two non-factory, instance actions **`acceptTravel`** and **`rejectTravel`** to set the overrall status of a _Travel_ instance respectively to _accepted_ (`A`) or _rejected_ (`X`).
+*선택* 연습문제로, _Travel_ 인스턴스의 전체 상태를 각각 _accepted_ (`A`) 또는 _rejected_ (`X`)로 설정하기 위해 두 개의 non-factory 인스턴스 액션 **`acceptTravel`** 과 **`rejectTravel`** 을 추가로 구현할 수 있습니다.
 
-> **Please note**: The purpose of the different exercises is to show you how to implement the different action types - and less on having the perfect business scenario.
+> **참고**: 여러 연습문제의 목적은 완벽한 비즈니스 시나리오를 만드는 것보다 다양한 액션 유형을 구현하는 방법을 보여주는 데 있습니다.
 
-- [6.1: Add the Instance-bound Action `deductDiscount`](#exercise-61-add-the-instance-bound-action-deductdiscount)
-  - [6.1.1: Define an Instance Action](#exercise-611-define-an-instance-action)
-  - [6.1.2: Implement the Action Method](#exercise-612-implement-the-action-method)
-  - [6.1.3: Expose and Test the Action](#exercise-613-expose-and-test-the-action)
-  - [6.1.4: Add an Input Parameter](#exercise-614-add-an-input-parameter)
-  - [6.1.5: Adjust the Action Method](#exercise-615-adjust-the-action-method)
-  - [6.1.6: Test the Action with Parameter](#exercise-616-test-the-action-with-parameter)
-- [6.2: Add the Instance-bound Factory Action `copyTravel`](#exercises-62-add-the-instance-bound-factory-action-copytravel)
-  - [6.2.1: Define the Factory Action](#exercise-621-define-the-factory-action)
-  - [6.2.2: Implement the Factory Action](#exercise-622-implement-the-factory-action)
-  - [6.2.3: Expose and Test the Factory Action](#exercise-623-expose-and-test-the-factory-action)
-- \[**OPTIONAL**\] [6.3: Add the Instance-bound Actions `acceptTravel` and `rejectTravel`](#optional-exercise-63-add-the-instance-actions-accepttravel-and-rejecttravel)
-  - [6.3.1: Define the Actions](#exercise-631-define-the-actions)
-  - [6.3.2: Implement the Action Methods](#exercise-632-implement-the-action-methods)
-  - [6.3.3: Expose and Test the Actions](#exercise-633-expose-and-test-the-actions)  
-- [Summary](#summary)
+- [6.1: Instance-bound Action `deductDiscount` 추가하기](#exercise-61-add-the-instance-bound-action-deductdiscount)
+  - [6.1.1: 인스턴스 액션 정의하기](#exercise-611-define-an-instance-action)
+  - [6.1.2: 액션 메소드 구현하기](#exercise-612-implement-the-action-method)
+  - [6.1.3: 액션 노출 및 테스트하기](#exercise-613-expose-and-test-the-action)
+  - [6.1.4: 입력 파라미터 추가하기](#exercise-614-add-an-input-parameter)
+  - [6.1.5: 액션 메소드 조정하기](#exercise-615-adjust-the-action-method)
+  - [6.1.6: 파라미터가 있는 액션 테스트하기](#exercise-616-test-the-action-with-parameter)
+- [6.2: Instance-bound Factory Action `copyTravel` 추가하기](#exercises-62-add-the-instance-bound-factory-action-copytravel)
+  - [6.2.1: Factory Action 정의하기](#exercise-621-define-the-factory-action)
+  - [6.2.2: Factory Action 구현하기](#exercise-622-implement-the-factory-action)
+  - [6.2.3: Factory Action 노출 및 테스트하기](#exercise-623-expose-and-test-the-factory-action)
+- [**선택사항**] [6.3: Instance-bound Actions `acceptTravel`과 `rejectTravel` 추가하기](#optional-exercise-63-add-the-instance-actions-accepttravel-and-rejecttravel)
+  - [6.3.1: 액션 정의하기](#exercise-631-define-the-actions)
+  - [6.3.2: 액션 메소드 구현하기](#exercise-632-implement-the-action-methods)
+  - [6.3.3: 액션 노출 및 테스트하기](#exercise-633-expose-and-test-the-actions)
+- [요약](#summary)
 
-> **Reminder**: Do not forget to replace the suffix placeholder **`###`** with your choosen or assigned group ID in the exercise steps below. 
+> **알림**: 아래 연습문제 단계에서 접미사 플레이스홀더 **`###`** 를 선택하거나 할당받은 그룹 ID로 반드시 교체하십시오.
 
-### Information: Actions
-> In the RAP context, an action is a non-standard operation that change the data of a BO instance. 
-> 
-> Actions are specified in behavior definitions and implemented in ABAP behavior pools. 
-> By default, actions are related to instances of a BO entity. The addition `static` allows you to define a static actions that are not bound to any instance but relates to the complete entity.
-> 
-> Two main categories of actions can be implemented in RAP:  
-> - **Non-factory actions**: Defines a RAP action which offers non-standard behavior. The custom logic must be implemented in the RAP handler method `FOR MODIFY`. An action per default relates to a RAP BO entity instance and changes the state of the instance.  An action is related to an instance by default. Non-factory actions can be instance-bound (default) or static.
-> - **Factory actions**: Factory actions are used to create RAP BO entity instances. Factory actions can be instance-bound (default) or static. Instance-bound factory actions can copy specific values of an instance. Static factory actions can be used to create instances with prefilled default values.
+### 정보: Actions
+> RAP 컨텍스트에서 Action은 BO 인스턴스의 데이터를 변경하는 비표준 작업입니다.
 >
-> ℹ **Further reading**: [Actions](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/83bad707a5a241a2ae93953d81d17a6b.html) **|** [CDS BDL - non-standard operations](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenbdl_nonstandard.htm) **|** [ABAP EML - response_param](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abapeml_response.htm)   
-> ℹ **Further reading**: [RAP BO Contract](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/3a402c5cf6a74bc1a1de080b2a7c6978.html) **|** [RAP BO Provider API (derived types, %cid, implicit response parameters,...)](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/2a3da8a5b19e4f6b953e9a11fb5cc747.html?version=Cloud) 
+> Action은 Behavior Definition에 명시되고 ABAP Behavior Pool에서 구현됩니다.
+> 기본적으로 Action은 BO 엔티티의 인스턴스와 관련이 있습니다. `static` 추가 구문을 사용하면 특정 인스턴스에 국한되지 않고 전체 엔티티와 관련된 정적 액션을 정의할 수 있습니다.
+>
+> RAP에서 구현할 수 있는 Action의 두 가지 주요 카테고리는 다음과 같습니다:
+> - **Non-factory actions**: 비표준 Behavior를 제공하는 RAP Action을 정의합니다. 커스텀 로직은 RAP 핸들러 메소드 `FOR MODIFY`에서 구현해야 합니다. Action은 기본적으로 RAP BO 엔티티 인스턴스와 관련이 있으며 인스턴스의 상태를 변경합니다. Non-factory Action은 Instance-bound (기본값)이거나 static일 수 있습니다.
+> - **Factory actions**: Factory Action은 RAP BO 엔티티 인스턴스를 생성하는 데 사용됩니다. Factory Action은 Instance-bound (기본값)이거나 static일 수 있습니다. Instance-bound Factory Action은 인스턴스의 특정 값을 복사할 수 있습니다. Static Factory Action은 미리 채워진 기본값으로 인스턴스를 생성하는 데 사용할 수 있습니다.
+>
+> ℹ **추가 정보**: [Actions](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/83bad707a5a241a2ae93953d81d17a6b.html) **|** [CDS BDL - non-standard operations](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenbdl_nonstandard.htm) **|** [ABAP EML - response_param](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abapeml_response.htm)
+> ℹ **추가 정보**: [RAP BO Contract](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/3a402c5cf6a74bc1a1de080b2a7c6978.html) **|** [RAP BO Provider API (derived types, %cid, implicit response parameters,...)](https://help.sap.com/docs/BTP/923180ddb98240829d935862025004d6/2a3da8a5b19e4f6b953e9a11fb5cc747.html?version=Cloud)
 
 
-## Exercise 6.1: Add the Instance-bound Action `deductDiscount`
-[^Top of page](#introduction)
+## 연습문제 6.1: Instance-bound Action `deductDiscount` 추가하기
+[^맨 위로](#introduction)
 
-> You will now define, implement, and expose the action **`deductDiscount`**, a non-factory instance-bound action returning itself. The action offers the possibility to *deduct a certain percentage from the booking fee* (**`BookingFee`**) of a _Travel_ instance. 
-> 
-> The discount percentage can either be fix (30% in the present exercise) in the action implementation or be freely specified by the end-user or the calling APIs by offering an action with input parameters.
-> 
-> You will get familiar with both action implementations, i.e. action without and action with input parameters in the present exercise.  
-> 
+> 이제 non-factory instance-bound action인 **`deductDiscount`** 를 정의, 구현 및 노출할 것입니다. 이 액션은 자기 자신을 반환하며, _Travel_ 인스턴스의 **`BookingFee`** 에서 특정 비율을 차감하는 기능을 제공합니다.
+>
+> 할인율은 액션 구현에서 고정값(이 연습문제에서는 30%)으로 하거나, 최종 사용자나 호출하는 API가 입력 파라미터가 있는 액션을 통해 자유롭게 지정할 수 있도록 할 수 있습니다.
+>
+> 이번 연습문제에서는 입력 파라미터가 없는 액션과 있는 액션 두 가지 구현 방식에 모두 익숙해질 것입니다.
 
-### Exercise 6.1.1: Define an Instance Action 
+### 연습문제 6.1.1: 인스턴스 액션 정의하기
 
-> First, define the non-factory, instance action **`deductDiscount`** in the behavior definition of the _Travel_ entity. This action has no input parameter. 
+> 먼저, _Travel_ 엔티티의 Behavior Definition에서 입력 파라미터가 없는 non-factory 인스턴스 액션 **`deductDiscount`** 를 정의합니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
-  
-1. Go to your behavior definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`** and define the instance action without input paramater.
-   
-   For that, insert the following code snippet after the defined validations as shown on the screenshot below.
-   
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
+
+1. Behavior Definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`** 로 이동하여 입력 파라미터가 없는 인스턴스 액션을 정의합니다.
+
+   이를 위해, 아래 스크린샷과 같이 정의된 Validation 뒤에 다음 코드 스니펫을 삽입합니다.
+
    ```
      action deductDiscount result [1] $self;
-   ```      
-   
-   The result should look like this:   
+   ```
+
+   결과는 다음과 같아야 합니다:
    <!-- ![CDS BO Behavior Definition](images/b10.png)  -->
    <img src="images/b10.png" alt="CDS BO Behavior Definition" width="60%">
-   
-   **Short explanation**:  
-   - The name of the instance action is specified after the keyword **`action`**
-   - The keyword **`result`** defines the output parameter of the action.
-      - Its cardinality is specified between the square brackets (`[cardinality]`). It is a mandatory addition.  
-      - **`$self`** specifies that the type of the result parameter is the same type as the entity for which the action or function is defined - i.e. the _Travel_ entity type in the present exercise. The return type of the result parameter can be an entity or a structure.     
-    - **Note**: The output parameter **`result`** can be used to store the result of an action or function in an internal table. However, it does not affect the result of an action or function that is committed to the database.   
-      
-    > ℹ **Further reading**: [Action Definition](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/14ddc6b2442b4b97842af9158a1c9c44.html) 
 
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+   **간단한 설명**:
+   - 인스턴스 액션의 이름은 키워드 **`action`** 뒤에 명시됩니다.
+   - 키워드 **`result`** 는 액션의 출력 파라미터를 정의합니다.
+      - Cardinality는 대괄호(`[cardinality]`) 사이에 명시되며, 필수 항목입니다.
+      - **`$self`** 는 결과 파라미터의 타입이 액션이나 함수가 정의된 엔티티와 동일한 타입임을 명시합니다. 이 연습문제에서는 _Travel_ 엔티티 타입입니다. 결과 파라미터의 반환 타입은 엔티티 또는 구조체가 될 수 있습니다.
+    - **참고**: 출력 파라미터 **`result`** 는 액션이나 함수의 결과를 내부 테이블에 저장하는 데 사용할 수 있습니다. 그러나 데이터베이스에 커밋되는 액션이나 함수의 결과에는 영향을 미치지 않습니다.
 
-3. Now, declare the required method in behavior implementation class with the ADT Quick Fix.
+    > ℹ **추가 정보**: [Action Definition](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/14ddc6b2442b4b97842af9158a1c9c44.html)
 
-   Set the cursor on the action name, **`deductDiscount`**, and press **Ctrl+1** to open the **Quick Assist** view.
-  
-    Select the entry _**`Add method for action deductDiscount of entity zrap100_r_traveltp_### ...`**_ in the view to add the required method to the local handler class.   
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
+
+3. 이제 ADT Quick Fix를 사용하여 Behavior Implementation 클래스에 필요한 메소드를 선언합니다.
+
+   액션 이름 **`deductDiscount`** 에 커서를 놓고 **Ctrl+1** 을 눌러 **Quick Assist** 뷰를 엽니다.
+
+    뷰에서 _**`Add method for action deductDiscount of entity zrap100_r_traveltp_### ...`**_ 항목을 선택하여 필요한 메소드를 로컬 핸들러 클래스에 추가합니다.
 
     <!-- ![Travel BO Behavior Definition](images/nn.png) -->
-   <img src="images/nn.png" alt="CDS BO Behavior Definition" width="60%">  
-      
-4. Save ![save icon](images/adt_save.png) the changes.
+   <img src="images/nn.png" alt="CDS BO Behavior Definition" width="60%">
 
-5. Set the cursor on the method name, **`deductDiscount`**, press **F3** to navigate to the declaration part of the local handler class of the behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**.   
+4. 변경 사항을 저장(![save icon](images/adt_save.png))합니다.
+
+5. 메소드 이름 **`deductDiscount`** 에 커서를 놓고 **F3** 을 눌러 Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 의 로컬 핸들러 클래스 선언부로 이동합니다.
 
    ![Travel BO Behavior Pool](images/b12a.png)
    <!-- <img src="images/b12a.png" alt="CDS BO Behavior Pool" width="60%">   -->
 
-6. In the declaration part set the cursor on the method name, **`deductDiscount`**, press **F2**, and examine the full method interface.   
-      
+6. 선언부에서 메소드 이름 **`deductDiscount`** 에 커서를 놓고 **F2** 를 눌러 전체 메소드 인터페이스를 확인합니다.
+
    <!-- ![Travel BO Behavior Pool](images/b12b.png)  -->
-   <img src="images/b12b.png" alt="CDS BO Behavior Pool" width="60%">   
-  
-   **Short explanation**:  
-   - The addition **`FOR MODIFY`** after the method name, together with the addition **`FOR ACTION`** after the importing parameter, indicates that this method provides the implementation of an action.
-   - Method signature for the non-factory instance action `deductDiscount`:
-     - `IMPORTING`parameter **`keys`** - a table containing the keys of the instances on which the action must be executed
-     - Implicit `CHANGING` parameters (aka _implicit response parameters_):  
-       - **`result`** - used to store the result of the performed action.
-       - **`mapped`** - table providing the consumer with ID mapping information.
-       - **`failed`** - table with information for identifying the data set where an error occurred.
-       - **`reported`** - table with data for instance-specific messages.
-      
-    > 
-  
-    > **Please note**:  
-    > An action is implemented in a **`FOR MODIFY`** method with the addition **`FOR ACTION`**. The signature of an action method always depends on the type of action: factory or non-factory, and instance or static.   
-    > The rules for implementing an action operation in a RAP business object are explained in the respective _**Implementation Contract**_.      
-    
-    > ℹ **Further reading**: [Action Implementation](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/6edad7d113394602b4bfa37e07f37764.html)  **|**  [Implementation Contract: Action](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/de6569d4b92e40a0911c926170140beb.html)   
-   
-    Go ahead with the implementation of the action method.     
+   <img src="images/b12b.png" alt="CDS BO Behavior Pool" width="60%">
+
+   **간단한 설명**:
+   - 메소드 이름 뒤의 **`FOR MODIFY`** 추가 구문과 importing 파라미터 뒤의 **`FOR ACTION`** 추가 구문은 이 메소드가 액션의 구현을 제공함을 나타냅니다.
+   - non-factory 인스턴스 액션 `deductDiscount`의 메소드 시그니처:
+     - `IMPORTING` 파라미터 **`keys`** - 액션이 실행되어야 할 인스턴스의 키를 담고 있는 테이블
+     - 암묵적 `CHANGING` 파라미터 (일명 _implicit response parameters_):
+       - **`result`** - 수행된 액션의 결과를 저장하는 데 사용됩니다.
+       - **`mapped`** - 소비자에게 ID 매핑 정보를 제공하는 테이블.
+       - **`failed`** - 오류가 발생한 데이터셋을 식별하기 위한 정보가 담긴 테이블.
+       - **`reported`** - 인스턴스별 메시지를 위한 데이터가 담긴 테이블.
+
+    >
+    > **참고**:
+    > 액션은 **`FOR ACTION`** 추가 구문과 함께 **`FOR MODIFY`** 메소드에서 구현됩니다. 액션 메소드의 시그니처는 항상 액션의 유형(factory 또는 non-factory, instance 또는 static)에 따라 달라집니다.
+    > RAP 비즈니스 오브젝트에서 액션 작업을 구현하는 규칙은 해당 _**Implementation Contract**_ 에 설명되어 있습니다.
+
+    > ℹ **추가 정보**: [Action Implementation](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/6edad7d113394602b4bfa37e07f37764.html)  **|**  [Implementation Contract: Action](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/de6569d4b92e40a0911c926170140beb.html)
+
+    액션 메소드 구현을 계속 진행하십시오.
 
    </details>
 
-### Exercise 6.1.2: Implement the Action Method
+### 연습문제 6.1.2: 액션 메소드 구현하기
 
-> Now implement the action behavior in the appropriate method in the behavior pool of the _Travel_ entity.
+> 이제 _Travel_ 엔티티의 Behavior Pool에 있는 적절한 메소드에서 액션 Behavior를 구현합니다.
 
 <details>
-  <summary>🔵 Click to expand!</summary>
-  
-1. Implement the action method **`deductDiscount`**.
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-   The main steps of the implemented business logic:     
-   1. Implement the custom logic to determine the new values: The discounted booking fee must be calculated for each instance.   
-   2. The discount percentage is fix at the current stage: 30%.  
-   3. Modify the relevant fields of the instances with the EML statement **`MODIFY`**: Here only the field **`BookingFee`** must be updated.   
-   4. Read the data from the buffer with the EML statement **`READ`** to fill the action result parameter **`result`**.  
-   5. The implicit response parameters are filled where necessary:
-      - **`failed`** - with information for identifying the data set where an error occurred.
-      - **`mapped`** - table providing the consumer with ID mapping information.
-      - **`reported`** - with data for instance-specific messages in case of failure.
+1. 액션 메소드 **`deductDiscount`** 를 구현합니다.
 
-   Replace the current method implementation with the code snippet provided below and replace all occurrences of the placeholder **`###`** with your group ID. 
-   
-   You can use the **ABAP Pretty Printer** (**Ctrl+F1**) to format your source code.
+   구현된 비즈니스 로직의 주요 단계:
+   1. 새로운 값을 결정하기 위한 커스텀 로직 구현: 각 인스턴스에 대해 할인된 예약 수수료를 계산해야 합니다.
+   2. 현재 단계에서 할인율은 30%로 고정됩니다.
+   3. EML 구문 **`MODIFY`** 를 사용하여 인스턴스의 관련 필드를 수정합니다: 여기서는 **`BookingFee`** 필드만 업데이트해야 합니다.
+   4. EML 구문 **`READ`** 를 사용하여 버퍼에서 데이터를 읽어 액션 결과 파라미터 **`result`** 를 채웁니다.
+   5. 필요한 경우 암묵적 응답 파라미터가 채워집니다:
+      - **`failed`** - 오류가 발생한 데이터셋을 식별하기 위한 정보 포함.
+      - **`mapped`** - 소비자에게 ID 매핑 정보를 제공하는 테이블.
+      - **`reported`** - 실패 시 인스턴스별 메시지를 위한 데이터 포함.
+
+   현재 메소드 구현을 아래 제공된 코드 스니펫으로 교체하고, 플레이스홀더 **`###`** 의 모든 발생을 그룹 ID로 교체하십시오.
+
+   **ABAP Pretty Printer**(**Ctrl+F1**)를 사용하여 소스 코드 서식을 지정할 수 있습니다.
 
 
-   <pre lang="ABAP">  
+   <pre lang="ABAP">
    **************************************************************************
    * Instance-bound non-factory action:
-   * Deduct the specified discount from the booking fee (BookingFee)
+   * 지정된 할인을 예약 수수료(BookingFee)에서 차감합니다.
    **************************************************************************
    METHOD deductDiscount.
      DATA travels_for_update TYPE TABLE FOR UPDATE ZRAP100_R_TravelTP_###.
-     DATA(keys_with_valid_discount) = keys.   
-  
-     " read relevant travel instance data (only booking fee)
+     DATA(keys_with_valid_discount) = keys.
+
+     " 관련된 travel 인스턴스 데이터 읽기 (booking fee만)
      READ ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
          ENTITY Travel
          FIELDS ( BookingFee )
          WITH CORRESPONDING #( keys_with_valid_discount )
          RESULT DATA(travels).
-  
-     LOOP AT travels ASSIGNING FIELD-SYMBOL(<travel>).  
-         DATA(reduced_fee) = <travel>-BookingFee * ( 1 - 3 / 10 ) .  
-   
+
+     LOOP AT travels ASSIGNING FIELD-SYMBOL(<travel>).
+         DATA(reduced_fee) = <travel>-BookingFee * ( 1 - 3 / 10 ) .
+
          APPEND VALUE #( %tky       = <travel>-%tky
                        BookingFee = reduced_fee
                      ) TO travels_for_update.
      ENDLOOP.
-  
-     " update data with reduced fee
+
+     " 할인된 수수료로 데이터 업데이트
      MODIFY ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
          ENTITY Travel
          UPDATE FIELDS ( BookingFee )
          WITH travels_for_update.
-  
-     " read changed data for action result
+
+     " 액션 결과를 위해 변경된 데이터 읽기
      READ ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
          ENTITY Travel
          ALL FIELDS WITH
          CORRESPONDING #( travels )
          RESULT DATA(travels_with_discount).
-  
-     " set action result
+
+     " 액션 결과 설정
      result = VALUE #( FOR travel IN travels_with_discount ( %tky   = travel-%tky
                                                                %param = travel ) ).
    ENDMETHOD.
    </pre>
 
-   The result should look like this:
+   결과는 다음과 같아야 합니다:
 
    <!-- ![Travel BO Behavior Pool](images/n9a.png) -->
-   <img src="images/n9a.png" alt="CDS BO Behavior Pool" width="60%">     
+   <img src="images/n9a.png" alt="CDS BO Behavior Pool" width="60%">
 
-   **Short explanation**:  
-   - The provided implementation is mass-enabled. This is recommended. 
-   - The EML statement **`MODIFY ENTITIES ... UPDATE FIELDS`** is used to update specific fields of the instances.     
-   - The internal tables are filled inline using the constructor operator **`VALUE`** which made the need for explicit declaration obsolete.       
-   - The EML statement **`READ ENTITIES ... ALL FIELDS WITH CORRESPONDING`** is used to read all fields of the updated instances from the buffer to fill the input paramter `result`.        
+   **간단한 설명**:
+   - 제공된 구현은 대량 처리가 가능하도록 작성되었습니다. 이는 권장 사항입니다.
+   - EML 구문 **`MODIFY ENTITIES ... UPDATE FIELDS`** 는 인스턴스의 특정 필드를 업데이트하는 데 사용됩니다.
+   - 내부 테이블은 생성자 연산자 **`VALUE`** 를 사용하여 인라인으로 채워지므로 명시적인 선언이 필요 없습니다.
+   - EML 구문 **`READ ENTITIES ... ALL FIELDS WITH CORRESPONDING`** 은 입력 파라미터 `result`를 채우기 위해 버퍼에서 업데이트된 인스턴스의 모든 필드를 읽는 데 사용됩니다.
 
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.     
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
 </details>
 
-### Exercise 6.1.3: Expose and Test the Action
+### 연습문제 6.1.3: 액션 노출 및 테스트하기
 
-> In contratry to determinations and validations which are automatically called by the RAP runtime at the specified trigger time, actions must be explicitly exposed on the BO projection layer and called by a consumer, e.g. on the UI or directly via EML statements. 
->  
-> Now, you will expose the action in the BO behavior projection and enrich the UI semantics in the CDS metadata extension to add an appropriate button to the _Travel_ App.
+> 지정된 트리거 시간에 RAP 런타임에 의해 자동으로 호출되는 Determination 및 Validation과 달리, Action은 BO Projection 레이어에서 명시적으로 노출되고 UI나 EML 구문을 통해 직접 소비자에 의해 호출되어야 합니다.
+>
+> 이제 BO Behavior Projection에서 액션을 노출하고 CDS Metadata Extension에서 UI 시맨틱을 강화하여 _Travel_ 앱에 적절한 버튼을 추가할 것입니다.
 
  <details>
-  <summary>🔵 Click to expand!</summary>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. Expose the action in the BO behavior projection.
-   
-   Go to your behavior projection ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TRAVELTP_###`** and insert the following code snippet as shown on the screenshot below. 
-   
-   The keyword **`use action`** indicates that a behavior of the base BO is used on the projection layer.
-   
+1. BO Behavior Projection에서 액션을 노출합니다.
+
+   Behavior Projection ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TRAVELTP_###`** 로 이동하여 아래 스크린샷과 같이 다음 코드 스니펫을 삽입합니다.
+
+   키워드 **`use action`** 은 기본 BO의 Behavior가 Projection 레이어에서 사용됨을 나타냅니다.
+
    ```
    use action deductDiscount;
    ```
-   
-   The result should look like this:
+
+   결과는 다음과 같아야 합니다:
 
    ![Travel BO Behavior Projection](images/b14.png)
-      
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.  
 
-3. Enhance UI semantics to make the action **`deductDiscount`** only visible on the object page with the label _**Deduct Discount**_. 
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
-   For that, open your metadata extension ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TRAVELTP_###`** and replace the existing all **`@UI`** annotation block placed before the element **`OverallStatus`** with the code snippet provided below as shown on the screenshot below. The semantic of the annotation **`@UI.identification`** will be enhanced for the purpose. 
-   
-   **Please note**: Some lines in the provided code snippet are commented out using **`//`** at the beginning. **DO NOT remove them**. You will uncomment these lines in the following exercise steps.
-      
+3. 액션 **`deductDiscount`** 가 Object Page에서만 _**Deduct Discount**_라는 레이블로 보이도록 UI 시맨틱을 향상시킵니다.
+
+   이를 위해 Metadata Extension ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TRAVELTP_###`** 를 열고, **`OverallStatus`** 요소 앞에 위치한 기존의 모든 **`@UI`** 어노테이션 블록을 아래 스크린샷과 같이 제공된 코드 스니펫으로 교체합니다. 이 목적을 위해 **`@UI.identification`** 어노테이션의 시맨틱이 향상될 것입니다.
+
+   **참고**: 제공된 코드 스니펫의 일부 라인은 시작 부분에 **`//`** 를 사용하여 주석 처리되어 있습니다. **이것들을 제거하지 마십시오**. 다음 연습문제 단계에서 이 라인들의 주석을 해제할 것입니다.
+
    <pre lang="ABAP CDS">
      @UI: {
-         lineItem:       [ { position: 100, importance: #HIGH }                          
-                           //,{ type: #FOR_ACTION, dataAction: 'copyTravel', label: 'Copy Travel' } 
+         lineItem:       [ { position: 100, importance: #HIGH }
+                           //,{ type: #FOR_ACTION, dataAction: 'copyTravel', label: 'Copy Travel' }
                            //,{ type: #FOR_ACTION, dataAction: 'acceptTravel', label: 'Accept Travel' }
                            //,{ type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Travel' }
               ],
-         identification: [ { position: 100 }                          
-                          ,{ type: #FOR_ACTION, dataAction: 'deductDiscount', label: 'Deduct Discount' } 
+         identification: [ { position: 100 }
+                          ,{ type: #FOR_ACTION, dataAction: 'deductDiscount', label: 'Deduct Discount' }
                           //,{ type: #FOR_ACTION, dataAction: 'acceptTravel', label: 'Accept Travel' }
                           //,{ type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Travel' }
               ],
@@ -258,122 +256,122 @@ As *optional* exercises, you can additionally implement the two non-factory, ins
          }
    </pre>
 
-   The result should look like this:
-   
+   결과는 다음과 같아야 합니다:
+
    <!-- ![Travel CDS Metadata Extension](images/b15.png) -->
-   <img src="images/b15.png" alt="Travel CDS Metadata Extension" width="60%">     
-   
-4. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+   <img src="images/b15.png" alt="Travel CDS Metadata Extension" width="60%">
 
-5. Preview and test the enhanced Fiori elements App.
+4. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
-   For example, select a _Travel_ entry, navigate to the object page, and click on the new action button _**Deduct Discount**_. Check the action result: the booking fee must have been reduced by the percentage specified in the action method.
-   
+5. 향상된 Fiori Elements 앱을 미리 보고 테스트합니다.
+
+   예를 들어, _Travel_ 항목을 선택하고 Object Page로 이동한 다음, 새로운 액션 버튼 _**Deduct Discount**_ 를 클릭합니다. 액션 결과를 확인하십시오: 예약 수수료가 액션 메소드에 지정된 비율만큼 감소해야 합니다.
+
    ![Travel App Preview](images/preview7.png)
-   <img src="images/preview7.png" alt="Travel App Preview" width="70%">        
+   <img src="images/preview7.png" alt="Travel App Preview" width="70%">
 
-   If you wish, you can also define the button on the list report page in the CDS metadata extension, activate the changes, and re-test the app.
+   원한다면, CDS Metadata Extension에서 List Report Page에 버튼을 정의하고, 변경 사항을 활성화한 후 앱을 다시 테스트할 수도 있습니다.
 
 </details>
 
 
-### Exercise 6.1.4: Add an Input Parameter
-[^Top of page](#introduction)
+### 연습문제 6.1.4: 입력 파라미터 추가하기
+[^맨 위로](#introduction)
 
-> You will enhance the action **`deductDiscount`** with an input parameter (**`discount_percent`**) to allow end-users or calling APIs to freely specify the percentage to be deducted from the booking fee (**`BookingFee`**) of a _travel_ instance at runtime.   
->     
-> Action input parameters are modeled with abstract CDS entities (_abstract entities_). In the present example, we will use the abstract entity **`/dmo/a_travel_discount`** which defines a structure containing only one field, **`discount_percent`**, for the purpose. It is located in the package `/DMO/FLIGHT_DRAFT` of the _Flight Reference Scenario_. 
-  
-> ℹ **Info**: An abstract CDS entity defines the type properties of a CDS entity. Consequently, it provides metadata on element level or parameter level using CDS annotations and does not have a corresponding implementation nor an underlying persistency.
+> 최종 사용자나 호출하는 API가 런타임에 _Travel_ 인스턴스의 예약 수수료(**`BookingFee`**)에서 차감할 비율을 자유롭게 지정할 수 있도록 액션 **`deductDiscount`** 에 입력 파라미터(**`discount_percent`**)를 추가할 것입니다.
+>
+> 액션 입력 파라미터는 Abstract CDS Entity(_abstract entities_)로 모델링됩니다. 이 예에서는 이 목적을 위해 단 하나의 필드 **`discount_percent`** 를 포함하는 구조체를 정의하는 abstract entity **`/dmo/a_travel_discount`** 를 사용할 것입니다. 이 엔티티는 _Flight Reference Scenario_ 의 `/DMO/FLIGHT_DRAFT` 패키지에 있습니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
-  
-1. Let's have a look at the abstract entity defined in the data definition ![ddls icon](images/adt_ddls.png)**`/DMO/A_Travel_Discount`**. You can use the shortcut **Ctrl+Shift+A** to open the data definition.
+> ℹ **정보**: Abstract CDS Entity는 CDS 엔티티의 타입 속성을 정의합니다. 결과적으로, CDS 어노테이션을 사용하여 요소 수준이나 파라미터 수준에서 메타데이터를 제공하며, 해당 구현이나 기본 지속성(persistency)은 없습니다.
+
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
+
+1. 데이터 정의 ![ddls icon](images/adt_ddls.png)**`/DMO/A_Travel_Discount`** 에 정의된 abstract entity를 살펴보겠습니다. 단축키 **Ctrl+Shift+A** 를 사용하여 데이터 정의를 열 수 있습니다.
 
    <!-- ![CDS Abstract entity](images/b9.png) -->
-   <img src="images/b9.png" alt="CDS Abstract entity" width="60%">  
+   <img src="images/b9.png" alt="CDS Abstract entity" width="60%">
 
-   **Short explanation**:  
-   - An abstract entity is defined by the statement **`define abstract entity`** followed by the CDS entity name. 
-   - The current abtract entity defines a structure with only one field or element; The element name (**`discount_percent`**) and the element type (**`abap.int1`**) are specified.
-   - It is not here the case, but if required, it is possible to...
-      - specify a label using the element annotation `@EndUserText.label`.
-      - specify a value help using the element annotation `@Consumption.valueHelpDefinition`.
-      - hide an element using the element annotation `@UI.hidden`.
-  
-2. Go to the behavior definition ![bdef icon](images/adt_bdef.png) **`ZRAP100_R_TRAVELTP_###`** and add the addition **` parameter /dmo/a_travel_discount `** to the action definition. 
+   **간단한 설명**:
+   - Abstract entity는 **`define abstract entity`** 구문 다음에 CDS 엔티티 이름을 사용하여 정의됩니다.
+   - 현재 abstract entity는 단 하나의 필드 또는 요소를 가진 구조체를 정의합니다. 요소 이름(**`discount_percent`**)과 요소 타입(**`abap.int1`**)이 명시되어 있습니다.
+   - 여기서는 해당되지 않지만, 필요한 경우 다음이 가능합니다...
+      - 요소 어노테이션 `@EndUserText.label`을 사용하여 레이블을 지정합니다.
+      - 요소 어노테이션 `@Consumption.valueHelpDefinition`을 사용하여 값 도움말을 지정합니다.
+      - 요소 어노테이션 `@UI.hidden`을 사용하여 요소를 숨깁니다.
 
-   The source code should now look as follows:
-  
+2. Behavior Definition ![bdef icon](images/adt_bdef.png) **`ZRAP100_R_TRAVELTP_###`** 로 이동하여 액션 정의에 **` parameter /dmo/a_travel_discount `** 추가 구문을 추가합니다.
+
+   소스 코드는 이제 다음과 같아야 합니다:
+
    ```
    action deductDiscount parameter /dmo/a_travel_discount result [1] $self;
    ```
-      
-   The abstract entity **`/dmo/a_travel_discount`** is used after the keyword **`parameter`** to specify the parameter structure. The present action will only have one parameter (**`discount_percent`**) as defined in the abstract entity.     
-         
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
-  
+
+   Abstract entity **`/dmo/a_travel_discount`** 는 키워드 **`parameter`** 뒤에 사용되어 파라미터 구조를 명시합니다. 현재 액션은 abstract entity에 정의된 대로 단 하나의 파라미터(**`discount_percent`**)만 가집니다.
+
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
+
 </details>
-   
 
-### Exercise 6.1.5: Adjust the Action Method
 
-> You will now adjust the implementation of the business logic for the instance non-factory action **`deductDiscount`** with the input parameter **`deduct_discount`** in the behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**.
+### 연습문제 6.1.5: 액션 메소드 조정하기
+
+> 이제 Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 에서 입력 파라미터 **`deduct_discount`** 를 사용하는 인스턴스 non-factory 액션 **`deductDiscount`** 의 비즈니스 로직 구현을 조정할 것입니다.
 >
-> Only entered values greater than `0` and lower than `100` will be allowed.
+> `0`보다 크고 `100`보다 작은 입력값만 허용됩니다.
 
-> ℹ **Info**:  
-> Depending on the type of action, the importing parameter **`keys`** has different components.
-> The parameter structure **`%param`** for parameter input is imported by action with parameters. The parameter structure is used to access the passed values of the input parameters: **`deduct_discount`** in the present scenario - i.e. *`%param-deduct_discount`*.
+> ℹ **정보**:
+> 액션 유형에 따라 `IMPORTING` 파라미터 **`keys`** 는 다른 구성요소를 가집니다.
+> 파라미터 입력을 위한 파라미터 구조체 **`%param`** 은 파라미터가 있는 액션에 의해 임포트됩니다. 이 파라미터 구조체는 전달된 입력 파라미터의 값에 접근하는 데 사용됩니다: 현재 시나리오에서는 **`deduct_discount`** 입니다 - 즉, *`%param-deduct_discount`*.
 
  <details>
-  <summary>🔵 Click to expand!</summary>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. Go to your behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** and adjust the action method **`deductDiscount`**.
+1. Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 로 이동하여 액션 메소드 **`deductDiscount`** 를 조정합니다.
 
-   To adjust the current logic, you will have to retrieve the passed discount values from the parameter structure **`%param`** and check their validity.
-    
-   The required adjustments of the current business logic:
-   1. For all passed _Travel_ instances: Read and check the validity of the specified discount values from the parameter structure **`%param`**, and remove invalid ones: 0 < `%param-deduct_discount` <= 100 
-   2. Implement the custom logic to determine the new values: The discounted booking must be calculated for each instance according to the respective **`%param-deduct_discount`** value - instead of the fix discount (30%).  
-   
-   Replace the current method implementation with the code snippet provided below. Do not forget to replace all occurrences of the placeholder **`###`** with your group ID. 
-   
-   You can use the **ABAP Pretty Printer** (**Ctrl+F1**) to format your source code.
-      
+   현재 로직을 조정하려면, 파라미터 구조체 **`%param`** 에서 전달된 할인 값을 가져와 유효성을 검사해야 합니다.
+
+   현재 비즈니스 로직의 필요한 조정 사항:
+   1. 전달된 모든 _Travel_ 인스턴스에 대해: 파라미터 구조체 **`%param`** 에서 지정된 할인 값의 유효성을 읽고 확인한 후, 유효하지 않은 값(0 < `%param-deduct_discount` <= 100을 만족하지 않는 값)을 제거합니다.
+   2. 새로운 값을 결정하기 위한 커스텀 로직 구현: 각 인스턴스에 대해 할인된 예약 수수료는 고정된 할인율(30%) 대신 해당 **`%param-deduct_discount`** 값에 따라 계산되어야 합니다.
+
+   현재 메소드 구현을 아래 제공된 코드 스니펫으로 교체하십시오. 플레이스홀더 **`###`** 의 모든 발생을 그룹 ID로 교체하는 것을 잊지 마십시오.
+
+   **ABAP Pretty Printer**(**Ctrl+F1**)를 사용하여 소스 코드 서식을 지정할 수 있습니다.
+
    <pre lang="ABAP">
    **************************************************************************
-   * Instance-bound non-factory action with parameter `deductDiscount`:
-   * Deduct the specified discount from the booking fee (BookingFee)
+   * 파라미터 `deductDiscount`를 사용하는 Instance-bound non-factory action:
+   * 지정된 할인을 예약 수수료(BookingFee)에서 차감합니다.
    **************************************************************************
     METHOD deductDiscount.
       DATA travels_for_update TYPE TABLE FOR UPDATE ZRAP100_R_TravelTP_###.
       DATA(keys_with_valid_discount) = keys.
 
-      " check and handle invalid discount values
+      " 유효하지 않은 할인 값 확인 및 처리
       LOOP AT keys_with_valid_discount ASSIGNING FIELD-SYMBOL(<key_with_valid_discount>)
         WHERE %param-discount_percent IS INITIAL OR %param-discount_percent > 100 OR %param-discount_percent <= 0.
 
-        " report invalid discount value appropriately
+        " 유효하지 않은 할인 값을 적절하게 보고
         APPEND VALUE #( %tky                       = <key_with_valid_discount>-%tky ) TO failed-travel.
 
         APPEND VALUE #( %tky                       = <key_with_valid_discount>-%tky
                         %msg                       = NEW /dmo/cm_flight_messages(
                                                          textid = /dmo/cm_flight_messages=>discount_invalid
                                                          severity = if_abap_behv_message=>severity-error )
-                        %element-TotalPrice        = if_abap_behv=>mk-on     
+                        %element-TotalPrice        = if_abap_behv=>mk-on
                         %op-%action-deductDiscount = if_abap_behv=>mk-on
                       ) TO reported-travel.
 
-        " remove invalid discount value
+        " 유효하지 않은 할인 값 제거
         DELETE keys_with_valid_discount.
       ENDLOOP.
 
-      " check and go ahead with valid discount values
+      " 유효한 할인 값이 있는지 확인하고 진행
       CHECK keys_with_valid_discount IS NOT INITIAL.
 
-      " read relevant travel instance data (only booking fee)
+      " 관련된 travel 인스턴스 데이터 읽기 (booking fee만)
       READ ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
         ENTITY Travel
           FIELDS ( BookingFee )
@@ -391,146 +389,146 @@ As *optional* exercises, you can additionally implement the two non-factory, ins
                       ) TO travels_for_update.
       ENDLOOP.
 
-      " update data with reduced fee
+      " 할인된 수수료로 데이터 업데이트
       MODIFY ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
         ENTITY Travel
          UPDATE FIELDS ( BookingFee )
          WITH travels_for_update.
 
-      " read changed data for action result
+      " 액션 결과를 위해 변경된 데이터 읽기
       READ ENTITIES OF ZRAP100_R_TravelTP_### IN LOCAL MODE
         ENTITY Travel
           ALL FIELDS WITH
           CORRESPONDING #( travels )
         RESULT DATA(travels_with_discount).
 
-      " set action result
+      " 액션 결과 설정
       result = VALUE #( FOR travel IN travels_with_discount ( %tky   = travel-%tky
                                                               %param = travel ) ).
     ENDMETHOD.
    </pre>
-   
-   The result should look like this:
-   
-   ![Travel BO Behavior Pool](images/n9b.png)   
 
-4. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+   결과는 다음과 같아야 합니다:
+
+   ![Travel BO Behavior Pool](images/n9b.png)
+
+4. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
 </details>
 
-### Exercise 6.1.6: Test the Action with Parameter 
+### 연습문제 6.1.6: 파라미터가 있는 액션 테스트하기
 
-> You can now test the new behavior of the action button _**Deduct Discount`**_ on the enhanced _Travel_ app.
+> 이제 향상된 _Travel_ 앱에서 _**Deduct Discount**_ 액션 버튼의 새로운 동작을 테스트할 수 있습니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. Preview and test the enhanced Fiori elements _Travel_ App.
+1. 향상된 Fiori elements _Travel_ 앱을 미리 보고 테스트합니다.
 
-   Go to the object page of a given entry, click on the new action button _**Deduct Discount**_.
+   특정 항목의 Object Page로 이동하여 새로운 액션 버튼 _**Deduct Discount**_ 를 클릭합니다.
 
-   A dialog will now be prompted for you to enter a valid discount value, i.e. > 0 and <= 100, and confirm. 
-   
-   Check the result. 
+   이제 유효한 할인 값(즉, > 0 이고 <= 100)을 입력하고 확인하라는 대화 상자가 나타납니다.
+
+   결과를 확인하십시오.
 
    <!-- ![Travel App Preview](images/preview7a.png)  -->
-   <img src="images/preview7a.png" alt="Travel App Preview" width="80%">                                                                                               
-  
-   You can also repeat the test with an invalid value.  
+   <img src="images/preview7a.png" alt="Travel App Preview" width="80%">
 
-   ![Travel App Preview](images/preview7b.png)  
+   유효하지 않은 값으로도 테스트를 반복할 수 있습니다.
+
+   ![Travel App Preview](images/preview7b.png)
    <!-- <img src="images/preview7b.png" alt="Travel App Preview" width="40%">         -->
-    
+
 </details>
 
-## Exercises 6.2: Add the Instance-bound Factory Action `copyTravel`
-[^Top of page](#introduction)
+## 연습문제 6.2: Instance-bound Factory Action `copyTravel` 추가하기
+[^맨 위로](#introduction)
 
-> Now, you will define, implement, and expose the action **`copyTravel`**, an instance-bound factory action used to copy one or more `travel` instances and creates new instances based on the copied data. A new travel ID is assigned to a new travel instance by the unmanaged internal early numbering. 
+> 이제 하나 이상의 `travel` 인스턴스를 복사하고 복사된 데이터를 기반으로 새 인스턴스를 생성하는 데 사용되는 instance-bound factory action인 **`copyTravel`** 을 정의, 구현 및 노출할 것입니다. 새로운 travel ID는 unmanaged internal early numbering에 의해 새 travel 인스턴스에 할당됩니다.
 
-### Exercise 6.2.1: Define the Factory Action 
+### 연습문제 6.2.1: Factory Action 정의하기
 
-> Define the instance factory action **`copyTravel`** in the behavior definition.
+> Behavior Definition에서 인스턴스 factory action **`copyTravel`** 을 정의합니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
-  
-1. Go to the behavior definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`** and insert the following code snippet after the action defined in the previous step.
-   
-   ```ABAP   
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
+
+1. Behavior Definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`** 로 이동하여 이전 단계에서 정의한 액션 뒤에 다음 코드 스니펫을 삽입합니다.
+
+   ```ABAP
    factory action copyTravel [1];
    ```
-   
-   The result should look like this:
-   
-   <!-- ![Travel BO Behavior Definition](images/n11a.png) -->
-   <img src="images/n11a.png" alt="Travel BO Behavior Definition" width="60%">    
-         
-   **Short explanation**:  
-   For factory actions, the same rules apply as for instance non-factory actions with the following differences:
-   - Instance factory actions are specified with the keyword **`factory action`** before its name.
-   - Output parameters are not allowed. Factory actions always produce one new BO entity instance with possible child entity instances. It is therefore not necessary to specify the **`result`** parameter.
-   - The cardinality must always be **`[1]`** for factory actions.   
-   - The result of a factory action is returned in the implicit response parameter **`mapped`** by a mapping between the BDEF derived type **`%cid`** and the key of the newly created entity instance.
-   
-  > ℹ Further information can be found here: [CDS BDL - action, factory](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenbdl_action_factory.htm)
 
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+   결과는 다음과 같아야 합니다:
+
+   <!-- ![Travel BO Behavior Definition](images/n11a.png) -->
+   <img src="images/n11a.png" alt="Travel BO Behavior Definition" width="60%">
+
+   **간단한 설명**:
+   Factory action에는 다음과 같은 차이점을 제외하고 instance non-factory action과 동일한 규칙이 적용됩니다:
+   - 인스턴스 factory action은 이름 앞에 키워드 **`factory action`** 으로 명시됩니다.
+   - 출력 파라미터는 허용되지 않습니다. Factory action은 항상 하위 엔티티 인스턴스를 포함할 수 있는 하나의 새로운 BO 엔티티 인스턴스를 생성합니다. 따라서 **`result`** 파라미터를 명시할 필요가 없습니다.
+   - Factory action의 Cardinality는 항상 **`[1]`**이어야 합니다.
+   - Factory action의 결과는 BDEF 파생 타입 **`%cid`** 와 새로 생성된 엔티티 인스턴스의 키 간의 매핑을 통해 암묵적 응답 파라미터 **`mapped`** 에서 반환됩니다.
+
+  > ℹ 추가 정보는 여기에서 찾을 수 있습니다: [CDS BDL - action, factory](https://help.sap.com/doc/abapdocu_cp_index_htm/CLOUD/en-US/index.htm?file=abenbdl_action_factory.htm)
+
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
 </details>
 
-### Exercise 6.2.2: Implement the Factory Action
+### 연습문제 6.2.2: Factory Action 구현하기
 
-> Implement the instance factory action **`coyTravel`** in the base BO behavior pool.
+> 기본 BO Behavior Pool에서 인스턴스 factory action **`coyTravel`** 을 구현합니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. First declare the required method in the behavior pool.
-  
-   Go to the behavior definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`**, set the cursor on the action name, **`copyTravel`**, and press **Ctrl+1** to open the **Quick Assist** view. 
-   
-   Select the entry _**`Add method for action copyTravel of entity zrap100_r_traveltp_### ...`**_ in the view to add the required method to the local handler class.     
-      
-   The result should look like this: 
-   
-   ![Travel BO Behavior Definition](images/n12a.png)    
+1. 먼저 Behavior Pool에 필요한 메소드를 선언합니다.
 
-2. Go to the declaration part of the local handler class of the behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**, set the cursor on the method name, **`copyTravel`**, press **F2**, and examine the full method interface.  
-   
-   ![Travel BO Behavior Pool](images/n13.png)          
+   Behavior Definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`** 로 이동하여 액션 이름 **`copyTravel`** 에 커서를 놓고 **Ctrl+1** 을 눌러 **Quick Assist** 뷰를 엽니다.
 
-3. Implement the factory action **`copyTravel`** in the behavior pool ![class icon](images/adt_class.png) **`ZRAP100_BP_TRAVELTP_###`**.
+   뷰에서 _**`Add method for action copyTravel of entity zrap100_r_traveltp_### ...`**_ 항목을 선택하여 필요한 메소드를 로컬 핸들러 클래스에 추가합니다.
 
-   > ℹ **Info**:   
-   > The implementation method of a factory action imports the parameter structure **`%param`** which has the  component **`%is_draft`**. This component can be used by calling EML APIs to indicates the state of the new instance to be created:
-   > - `%is_draft` = `00` : New instance must be created as active instance - i.e., must be persisted. 
-   > - `%is_draft` = `01` : New instance must be created as draft instance - i.e., will first be only stored in the draft table.   
-   
-   The logic consists of the following steps:    
-   1. Remove all _travel_ instances with initial ID and read the data from the transfered _travel_ keys to be copied.   
-   2. Fill in a travel container (itab) with all the new _travel_ instances to be created. The copied data are adjusted as neeeded.      
-      - The component **`%param-%is_draft`** indicating the state of the new entity have to be evaluated - and the state of the new instances set accordingly.   
-      - In the present exercise, we will adjust the begin date (`BeginDate`) and the end date (`EndDate`) due to the implemented validation `validateDates` and set the overall status of new `travel` instances to `Open` (`O`).   
-   3. Create new _Travel_ instances with the EML statement **`MODIFY ENTITIES...CREATE`** which returns  the mapped data.    
-   4. Set the result set in the **`mapped`** structure - especially in the internal table **`mapped-travel`** for the present example.   
-   
-   For that, replace the current method implementation with the code snippet provided below and replace all occurrences of the placeholder **`###`** with your group ID.   
-   
+   결과는 다음과 같아야 합니다:
+
+   ![Travel BO Behavior Definition](images/n12a.png)
+
+2. Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 의 로컬 핸들러 클래스 선언부로 이동하여 메소드 이름 **`copyTravel`** 에 커서를 놓고 **F2** 를 누른 다음 전체 메소드 인터페이스를 확인합니다.
+
+   ![Travel BO Behavior Pool](images/n13.png)
+
+3. Behavior Pool ![class icon](images/adt_class.png) **`ZRAP100_BP_TRAVELTP_###`** 에서 factory action **`copyTravel`** 을 구현합니다.
+
+   > ℹ **정보**:
+   > Factory action의 구현 메소드는 파라미터 구조체 **`%param`** 을 임포트하며, 이 구조체는 **`%is_draft`** 구성요소를 가집니다. 이 구성요소는 호출하는 EML API가 생성될 새 인스턴스의 상태를 나타내는 데 사용할 수 있습니다:
+   > - `%is_draft` = `00` : 새 인스턴스는 active 인스턴스로 생성되어야 합니다. 즉, 영속화되어야 합니다.
+   > - `%is_draft` = `01` : 새 인스턴스는 draft 인스턴스로 생성되어야 합니다. 즉, 먼저 draft 테이블에만 저장됩니다.
+
+   로직은 다음 단계로 구성됩니다:
+   1. ID가 초기값인 모든 _travel_ 인스턴스를 제거하고 복사할 전송된 _travel_ 키에서 데이터를 읽습니다.
+   2. 생성될 모든 새로운 _travel_ 인스턴스를 담을 travel 컨테이너(itab)를 채웁니다. 복사된 데이터는 필요에 따라 조정됩니다.
+      - 새로운 엔티티의 상태를 나타내는 구성요소 **`%param-%is_draft`** 를 평가하고, 그에 따라 새 인스턴스의 상태를 설정해야 합니다.
+      - 이 연습문제에서는 구현된 validation `validateDates` 때문에 시작일(`BeginDate`)과 종료일(`EndDate`)을 조정하고, 새로운 `travel` 인스턴스의 전체 상태를 `Open`(`O`)으로 설정합니다.
+   3. EML 구문 **`MODIFY ENTITIES...CREATE`** 를 사용하여 새로운 _Travel_ 인스턴스를 생성하고, 이는 매핑된 데이터를 반환합니다.
+   4. **`mapped`** 구조체에 결과 집합을 설정합니다 - 특히 이 예에서는 내부 테이블 **`mapped-travel`** 에 설정합니다.
+
+   이를 위해 현재 메소드 구현을 아래 제공된 코드 스니펫으로 교체하고, 플레이스홀더 **`###`** 의 모든 발생을 그룹 ID로 교체하십시오.
+
    <pre lang="ABAP">
    **************************************************************************
    * Instance-bound factory action `copyTravel`:
-   * Copy an existing travel instance
+   * 기존 travel 인스턴스 복사하기
    **************************************************************************
     METHOD copyTravel.
        DATA:
          travels       TYPE TABLE FOR CREATE zrap100_r_traveltp_###\\travel.
 
-       " remove travel instances with initial %cid (i.e., not set by caller API)
+       " %cid가 초기값인 travel 인스턴스 제거 (즉, 호출 API에 의해 설정되지 않음)
        READ TABLE keys WITH KEY %cid = '' INTO DATA(key_with_inital_cid).
        ASSERT key_with_inital_cid IS INITIAL.
 
-       " read the data from the travel instances to be copied
+       " 복사할 travel 인스턴스에서 데이터 읽기
        READ ENTITIES OF zrap100_r_traveltp_### IN LOCAL MODE
          ENTITY travel
           ALL FIELDS WITH CORRESPONDING #( keys )
@@ -538,173 +536,173 @@ As *optional* exercises, you can additionally implement the two non-factory, ins
        FAILED failed.
 
        LOOP AT travel_read_result ASSIGNING FIELD-SYMBOL(<travel>).
-         " fill in travel container for creating new travel instance
-         APPEND VALUE #( %cid      = keys[ KEY entity %key = <travel>-%key ]-%cid 
+         " 새로운 travel 인스턴스 생성을 위한 travel 컨테이너 채우기
+         APPEND VALUE #( %cid      = keys[ KEY entity %key = <travel>-%key ]-%cid
                          %is_draft = keys[ KEY entity %key = <travel>-%key ]-%param-%is_draft
                          %data     = CORRESPONDING #( <travel> EXCEPT TravelID )
                       )
            TO travels ASSIGNING FIELD-SYMBOL(<new_travel>).
 
-         " adjust the copied travel instance data
-         "" BeginDate must be on or after system date
-         <new_travel>-BeginDate     = cl_abap_context_info=>get_system_date( ).      
-         "" EndDate must be after BeginDate
-         <new_travel>-EndDate       = cl_abap_context_info=>get_system_date( ) + 30. 
-         "" OverallStatus of new instances must be set to open ('O')
-         <new_travel>-OverallStatus = travel_status-open.   
+         " 복사된 travel 인스턴스 데이터 조정
+         "" BeginDate는 시스템 날짜와 같거나 그 이후여야 함
+         <new_travel>-BeginDate     = cl_abap_context_info=>get_system_date( ).
+         "" EndDate는 BeginDate 이후여야 함
+         <new_travel>-EndDate       = cl_abap_context_info=>get_system_date( ) + 30.
+         "" 새 인스턴스의 OverallStatus는 open ('O')으로 설정해야 함
+         <new_travel>-OverallStatus = travel_status-open.
        ENDLOOP.
 
-       " create new BO instance
+       " 새로운 BO 인스턴스 생성
        MODIFY ENTITIES OF zrap100_r_traveltp_### IN LOCAL MODE
          ENTITY travel
-           CREATE FIELDS ( AgencyID CustomerID BeginDate EndDate BookingFee 
+           CREATE FIELDS ( AgencyID CustomerID BeginDate EndDate BookingFee
                            TotalPrice CurrencyCode OverallStatus Description )
              WITH travels
          MAPPED DATA(mapped_create).
 
-       " set the new BO instances
+       " 새로운 BO 인스턴스 설정
        mapped-travel   =  mapped_create-travel .
-     ENDMETHOD.              
+     ENDMETHOD.
    </pre>
-   
-   Your source code should like this:
-   
+
+   소스 코드는 다음과 같아야 합니다:
+
    <!-- ![Travel BO Behavior Pool](images/n14.png)   -->
-   <img src="images/n14.png" alt="Travel BO Behavior Pool" width="70%">              
-    
-4. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
- 
+   <img src="images/n14.png" alt="Travel BO Behavior Pool" width="70%">
+
+4. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
+
 </details>
 
-### Exercise 6.2.3: Expose and Test the Factory Action
+### 연습문제 6.2.3: Factory Action 노출 및 테스트하기
 
-> Expose the instance factory action in the BO behavior projection and in the CDS metadata extension and test the enhance Fiori elements app.
+> BO Behavior Projection과 CDS Metadata Extension에서 인스턴스 factory action을 노출하고, 향상된 Fiori elements 앱을 테스트합니다.
 
- <details>
-  <summary>🔵 Click to expand!</summary>
+<details>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. Expose the new action **`copyTravel`** in the BO behavior projection.
+1. 새로운 액션 **`copyTravel`** 을 BO Behavior Projection에 노출합니다.
 
-   For that, open your behavior projection ![bdef icon](images/adt_bdef.png) **`ZRAP100_C_TRAVELTP_###`** and insert the following code snippet after the actions added previously. 
-   
+   이를 위해 Behavior Projection ![bdef icon](images/adt_bdef.png) **`ZRAP100_C_TRAVELTP_###`** 을 열고 이전에 추가된 액션들 뒤에 다음 코드 스니펫을 삽입합니다.
+
    ```
    use action copyTravel;
    ```
-   
-   The result should like this:
+
+   결과는 다음과 같아야 합니다:
 
    <!-- ![Travel BO Behavior Projection](images/n15.png) -->
-   <img src="images/n15.png" alt="Travel BO Behavior Projection" width="60%">  
-      
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+   <img src="images/n15.png" alt="Travel BO Behavior Projection" width="60%">
+
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
 
-3. Enhance UI semantics of the UI service to make the action **`copyTravel`** only visible on the list report page with the label _**Copy Travel**_.
+3. 액션 **`copyTravel`** 이 List Report Page에서만 _**Copy Travel**_ 레이블로 보이도록 UI 서비스의 UI 시맨틱을 향상시킵니다.
 
-   For that, open your CDS metadata extension ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TRAVELTP_###`** and un-comment following code line in the **`@UI.lineItem`** annotation block placed before the element **`OverallStatus`**.
+   이를 위해 CDS Metadata Extension ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TRAVELTP_###`** 을 열고, **`OverallStatus`** 요소 앞에 위치한 **`@UI.lineItem`** 어노테이션 블록에서 다음 코드 라인의 주석을 해제합니다.
 
-   ```   
+   ```
    ,{ type: #FOR_ACTION, dataAction: 'copyTravel', label: 'Copy Travel' }
    ```
 
-   The result should look like this:
-   
+   결과는 다음과 같아야 합니다:
+
    <!-- ![Travel CDS Metadta Extension](images/b21.png) -->
-   <img src="images/b21.png" alt="Travel CDS Metadta Extension" width="60%">     
-   
-4. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+   <img src="images/b21.png" alt="Travel CDS Metadta Extension" width="60%">
 
-5. Preview and test the enhanced Fiori elements app.
+4. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
-   Select a travel instance and choose **Copy**  
+5. 향상된 Fiori elements 앱을 미리 보고 테스트합니다.
 
-   ![Travel App Preview](images/copy.png)  
+   Travel 인스턴스를 선택하고 **Copy** 를 선택합니다.
 
-   <!--  (PS: Popup no longer available as of Steampunk 2211.)
-   Confirm the copy action.   
+   ![Travel App Preview](images/copy.png)
 
-   ![Travel App Preview](images/copy2.png)   
+   <!--  (PS: 스팀펑크 2211 버전부터 팝업이 더 이상 제공되지 않습니다.)
+   복사 작업을 확인합니다.
+
+   ![Travel App Preview](images/copy2.png)
    -->
-   
-   An object page with the new travel instance opens.   
 
-   ![Travel App Preview](images/copy3.png)    
-    
+   새로운 Travel 인스턴스가 있는 Object Page가 열립니다.
+
+   ![Travel App Preview](images/copy3.png)
+
 </details>
 
-## \[⚠OPTIONAL\] Exercise 6.3: Add the Instance Actions `acceptTravel` and `rejectTravel`
-[^Top of page](#introduction)
+## [⚠선택사항] 연습문제 6.3: 인스턴스 액션 `acceptTravel` 및 `rejectTravel` 추가하기
+[^맨 위로](#introduction)
 
-In this step, you will define, implement, and expose two instance-bound non-factory actions for the `Travel` entity, `acceptTravel` and `rejectTravel`. These actions will be used to set the overall status of one or more given _Travel_ instances to `Accepted` (`A`) and `Rejected` (`X`) respectively.
-           
-> ⚠ **Optional exercise**:
-> The non-factory instance ations  `acceptTravel` and `rejectTravel` defined and implemented in this exercise are similar to the one implemented in the exercise 6.1 (`deductDiscount`). They have been added to this document just to offer more functionalities to play with on the _Travel_ app.
-> 
-> If you are running out of time, we recommand you go ahead with the next exercise or copy the source code from the provided solution objects provided in the [ **Appendix** section](#Appendix).           
-           
-### Exercise 6.3.1: Define the Actions
+이 단계에서는 `Travel` 엔티티에 대해 두 개의 instance-bound non-factory action인 `acceptTravel`과 `rejectTravel`을 정의, 구현 및 노출할 것입니다. 이 액션들은 주어진 하나 이상의 _Travel_ 인스턴스의 전체 상태를 각각 `Accepted`(`A`) 및 `Rejected`(`X`)로 설정하는 데 사용됩니다.
 
-> First, define the instance non-factory actions **`acceptTravel`** and **`rejectTravel`** in the behavior definition of the _Travel_ entity.  
+> ⚠ **선택 연습문제**:
+> 이 연습문제에서 정의하고 구현하는 non-factory instance action `acceptTravel`과 `rejectTravel`은 연습문제 6.1에서 구현한 것(`deductDiscount`)과 유사합니다. 이들은 _Travel_ 앱에서 더 많은 기능을 가지고 놀 수 있도록 이 문서에 추가되었습니다.
+>
+> 시간이 부족하다면 다음 연습문제로 넘어가거나 [**부록** 섹션](#Appendix)에 제공된 솔루션 객체에서 소스 코드를 복사하는 것을 권장합니다.
+
+### 연습문제 6.3.1: 액션 정의하기
+
+> 먼저, _Travel_ 엔티티의 Behavior Definition에서 인스턴스 non-factory action인 **`acceptTravel`** 과 **`rejectTravel`** 을 정의합니다.
 
  <details>
-  <summary>🔵 Click to expand!</summary>
-  
-1. Go to your behavior definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`** and define both actions.
-   
-   For that, insert the following code snippet after the defined validations as shown on the screenshot below.
-   
+  <summary>🔵 클릭하여 펼치기!</summary>
+
+1. Behavior Definition ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TRAVELTP_###`** 로 이동하여 두 액션을 모두 정의합니다.
+
+   이를 위해 아래 스크린샷과 같이 정의된 validation 뒤에 다음 코드 스니펫을 삽입합니다.
+
    ```
    action acceptTravel result [1] $self;
-   action rejectTravel result [1] $self;   
-   ```      
-   
-   ![Travel BO Behavior Definition](images/n.png)      
+   action rejectTravel result [1] $self;
+   ```
 
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+   ![Travel BO Behavior Definition](images/n.png)
 
-3. Now, declare the required method in behavior implementation class with the ADT Quick Fix.
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
-   Set the cursor on one of the action names, **`acceptTravel`** or **`rejectTravel`**, and press **Ctrl+1** to open the **Quick Assist** view.
-  
-   Select the entry **`Add all 2 missing methods of entity zrap100_r_traveltp_### ...`** to add both methods to the local handler class `lcl_handler` of the behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**. 
-      
+3. 이제 ADT Quick Fix를 사용하여 Behavior Implementation 클래스에 필요한 메소드를 선언합니다.
+
+   액션 이름 중 하나인 **`acceptTravel`** 또는 **`rejectTravel`** 에 커서를 놓고 **Ctrl+1** 을 눌러 **Quick Assist** 뷰를 엽니다.
+
+   **`Add all 2 missing methods of entity zrap100_r_traveltp_### ...`** 항목을 선택하여 두 메소드를 모두 Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 의 로컬 핸들러 클래스 `lcl_handler`에 추가합니다.
+
    ![Travel BO Behavior Pool](images/n2.png)
 
-You are through with the definition of both actions. Go ahead with the implementations of the two inserted method in the behavior pool.
+이제 두 액션의 정의가 완료되었습니다. Behavior Pool에서 두 개의 삽입된 메소드의 구현을 계속 진행하십시오.
 
    </details>
 
-### Exercise 6.3.2: Implement the Action Methods
+### 연습문제 6.3.2: 액션 메소드 구현하기
 
-> Now implement the required action methods in the behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** of the _Travel_ entity.
+> 이제 _Travel_ 엔티티의 Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 에서 필요한 액션 메소드를 구현합니다.
 
  <details>
-  <summary>🔵 Click to expand!</summary>
-   
-1. You can check the interfaces of the methods **`acceptTravel`** and **`rejectTravel`** in the declaration part of the local handler class in the behavior pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**. They are similar to the one of the action method **`deductDiscount`**.
-  
-   For that, set the cursor on one of the method name, press **F2** to open the **ABAP Element Info** view, and examine the full method interface.  
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-   ![Travel BO Behavior Pool](images/n3.png)      
-   
-    Go ahead with the implementation.  
+1. Behavior Pool ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`** 의 로컬 핸들러 클래스 선언부에서 **`acceptTravel`** 과 **`rejectTravel`** 메소드의 인터페이스를 확인할 수 있습니다. 이들은 액션 메소드 **`deductDiscount`** 의 인터페이스와 유사합니다.
 
-2. Implement the action **`acceptTravel`** in the implementation part of the local handler class.   
-   The action is used to set the value of the field **`OverallStatus`** to **_Accepted_** (**`A`**). 
-   
-   The logic consists of the following steps:  
-   1. Implement the custom logic to determine the new values; **_Accepted_** (**`A`**) in the present scenario.  
-   2. Modify the relevant fields of the _travel_ instances; here only the field `OverallStatus` must be updated.  
-   3. Read the whole data of the updated instances from the buffer to fill the action result parameter.   
- 
-   For that, replace the current method implementation with the code snippet provided below and replace all occurrences of the placeholder **`###`** with your group ID. You can make use of the **F1 Help** for more information about the EML statements and other ABAP constructs.
-   
+   이를 위해 메소드 이름 중 하나에 커서를 놓고 **F2** 를 눌러 **ABAP Element Info** 뷰를 연 다음 전체 메소드 인터페이스를 확인합니다.
+
+   ![Travel BO Behavior Pool](images/n3.png)
+
+    구현을 계속 진행합니다.
+
+2. 로컬 핸들러 클래스의 구현부에서 액션 **`acceptTravel`** 을 구현합니다.
+   이 액션은 **`OverallStatus`** 필드의 값을 **_Accepted_**(**`A`**)로 설정하는 데 사용됩니다.
+
+   로직은 다음 단계로 구성됩니다:
+   1. 새로운 값을 결정하기 위한 커스텀 로직을 구현합니다. 현재 시나리오에서는 **_Accepted_**(**`A`**)입니다.
+   2. _travel_ 인스턴스의 관련 필드를 수정합니다. 여기서는 `OverallStatus` 필드만 업데이트하면 됩니다.
+   3. 액션 결과 파라미터를 채우기 위해 버퍼에서 업데이트된 인스턴스의 전체 데이터를 읽습니다.
+
+   이를 위해 현재 메소드 구현을 아래 제공된 코드 스니펫으로 교체하고, 플레이스홀더 **`###`** 의 모든 발생을 그룹 ID로 교체하십시오. EML 구문 및 기타 ABAP 구문에 대한 자세한 정보는 **F1 도움말** 을 사용할 수 있습니다.
+
    <pre lang="ABAP">
    *************************************************************************************
-   * Instance-bound non-factory action: Set the overall travel status to 'A' (accepted)
+   * Instance-bound non-factory action: 전체 travel 상태를 'A' (accepted)로 설정
    *************************************************************************************
      METHOD acceptTravel.
-       " modify travel instance
+       " travel 인스턴스 수정
        MODIFY ENTITIES OF zrap100_r_traveltp_### IN LOCAL MODE
          ENTITY Travel
            UPDATE FIELDS ( OverallStatus )
@@ -713,39 +711,39 @@ You are through with the definition of both actions. Go ahead with the implement
        FAILED failed
        REPORTED reported.
 
-       " read changed data for action result
+       " 액션 결과를 위해 변경된 데이터 읽기
        READ ENTITIES OF zrap100_r_traveltp_### IN LOCAL MODE
          ENTITY Travel
            ALL FIELDS WITH
            CORRESPONDING #( keys )
          RESULT DATA(travels).
 
-       " set the action result parameter
+       " 액션 결과 파라미터 설정
        result = VALUE #( FOR travel IN travels ( %tky   = travel-%tky
                                                  %param = travel ) ).
      ENDMETHOD.
    </pre>
-   
-   Your source code should look like this:
-   
+
+   소스 코드는 다음과 같아야 합니다:
+
    ![Travel BO Behavior Pool](images/n4.png)
-   
-   **Short explanation**:  
-   - The provided implementation is mass-enabled. This is recommended. 
-   - The EML statement **`MODIFY ENTITIES ... UPDATE FIELDS`** is used to update specific fields of the instances.     
-   - The internal tables are filled inline using the constructor operator **`VALUE`** which made the need for explicit declaration obsolete.       
-   - The EML statement **`READ ENTITIES ... ALL FIELDS WITH CORRESPONDING`** is used to read all fields of the updated instances from the buffer to fill the input paramter `result`.      
 
-3. Implement the action  **`rejectTravel`** which is used to set the value of the field **`OverallStatus`** to **`Rejected`** (**`X`**). The business logic is similar to the one of the `acceptTravel` method.
-   
-   For that, replace the current method implementation with the code snippet provided below and replace all occurrences of the placeholder **`###`** with your group ID.
+   **간단한 설명**:
+   - 제공된 구현은 대량 처리가 가능하도록 작성되었습니다. 이는 권장 사항입니다.
+   - EML 구문 **`MODIFY ENTITIES ... UPDATE FIELDS`** 는 인스턴스의 특정 필드를 업데이트하는 데 사용됩니다.
+   - 내부 테이블은 생성자 연산자 **`VALUE`** 를 사용하여 인라인으로 채워지므로 명시적인 선언이 필요 없습니다.
+   - EML 구문 **`READ ENTITIES ... ALL FIELDS WITH CORRESPONDING`** 은 입력 파라미터 `result`를 채우기 위해 버퍼에서 업데이트된 인스턴스의 모든 필드를 읽는 데 사용됩니다.
 
-   <pre lang="ABAP">   
+3. **`OverallStatus`** 필드의 값을 **`Rejected`**(**`X`**)로 설정하는 데 사용되는 액션 **`rejectTravel`** 을 구현합니다. 비즈니스 로직은 `acceptTravel` 메소드의 로직과 유사합니다.
+
+   이를 위해 현재 메소드 구현을 아래 제공된 코드 스니펫으로 교체하고, 플레이스홀더 **`###`** 의 모든 발생을 그룹 ID로 교체하십시오.
+
+   <pre lang="ABAP">
    *************************************************************************************
-   * Instance-bound non-factory action: Set the overall travel status to 'X' (rejected)
+   * Instance-bound non-factory action: 전체 travel 상태를 'X' (rejected)로 설정
    *************************************************************************************
      METHOD rejectTravel.
-       " modify travel instance(s)
+       " travel 인스턴스(들) 수정
        MODIFY ENTITIES OF zrap100_r_traveltp_### IN LOCAL MODE
          ENTITY Travel
            UPDATE FIELDS ( OverallStatus )
@@ -754,81 +752,81 @@ You are through with the definition of both actions. Go ahead with the implement
        FAILED failed
        REPORTED reported.
 
-       " read changed data for action result
+       " 액션 결과를 위해 변경된 데이터 읽기
        READ ENTITIES OF zrap100_r_traveltp_### IN LOCAL MODE
          ENTITY Travel
            ALL FIELDS WITH
            CORRESPONDING #( keys )
          RESULT DATA(travels).
 
-       " set the action result parameter
+       " 액션 결과 파라미터 설정
        result = VALUE #( FOR travel IN travels ( %tky   = travel-%tky
                                                  %param = travel ) ).
-     ENDMETHOD.   
+     ENDMETHOD.
    </pre>
-   
-   Your source code should look like this:
-   
+
+   소스 코드는 다음과 같아야 합니다:
+
    ![Travel BO Behavior Pool](images/n5.png)
 
-4. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
-   
+4. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
+
 </details>
 
-           
-### Exercise 6.3.3: Expose and Test the Actions 
-> Now, you will expose the actions in the BO behavior projection and enrich the UI semantics in the CDS metadata extension to add appropriate button to the _Travel_ App.
+
+### 연습문제 6.3.3: 액션 노출 및 테스트하기
+> 이제 BO Behavior Projection에서 액션을 노출하고, CDS Metadata Extension에서 UI 시맨틱을 강화하여 _Travel_ 앱에 적절한 버튼을 추가할 것입니다.
 
  <details>
-  <summary>🔵 Click to expand!</summary>
+  <summary>🔵 클릭하여 펼치기!</summary>
 
-1. Expose the actions in the BO behavior projection.
-   
-   Go to your behavior projection ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TRAVELTP_###`** 
-and insert the following code snippet as shown on the screenshot below. 
-         
+1. BO Behavior Projection에서 액션을 노출합니다.
+
+   Behavior Projection ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TRAVELTP_###`** 로 이동하여
+아래 스크린샷과 같이 다음 코드 스니펫을 삽입합니다.
+
    ```
    use action acceptTravel;
    use action rejectTravel;
    ```
 
-   Your source code should look like this:
-   
+   소스 코드는 다음과 같아야 합니다:
+
    ![Travel BO Behavior Projection](images/b6.png)
 
-2. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+2. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
-   The actions are yet ready to be consumed on the UI, but they also need to be explicitly placed on the UI. 
+   이제 액션은 UI에서 사용할 준비가 되었지만, UI에 명시적으로 배치해야 합니다.
 
-3. Enhance UI semantics of the UI service to make the actions visible on the list report page and the object page; with the labels `Accept Travel` and `Reject Travel` specified. 
+3. List Report Page와 Object Page에서 `Accept Travel` 및 `Reject Travel` 레이블로 액션이 보이도록 UI 서비스의 UI 시맨틱을 향상시킵니다.
 
-   For that, go to your CDS metadata extension ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TRAVELTP_###`** 
-   and uncomment the relevant code lines in the `@UI` annotations block placed before the element **`OverallStatus`** 
-   as shown on the screenshot below.     
-   
+   이를 위해 CDS Metadata Extension ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TRAVELTP_###`** 로 이동하여
+   **`OverallStatus`** 요소 앞에 위치한 `@UI` 어노테이션 블록에서 관련 코드 라인의 주석을
+   아래 스크린샷과 같이 해제합니다.
+
    ![Travel Metadata Extension](images/b7.png)
 
-4. Save ![save icon](images/adt_save.png) and activate ![activate icon](images/adt_activate.png) the changes.
+4. 변경 사항을 저장(![save icon](images/adt_save.png))하고 활성화(![activate icon](images/adt_activate.png))합니다.
 
-5. You can now preview and test your enhanced Fiori elements app. The actions should now appear on the UI. 
-   
-   For example, select a `Travel` record with the overall status _Open_ and press on the action button _**Accept Travel**_ or  _**Reject Travel**_. The overall status should now be _**Accepted**_ or _**Rejected**_. 
-    
+5. 이제 향상된 Fiori elements 앱을 미리 보고 테스트할 수 있습니다. 액션이 이제 UI에 나타나야 합니다.
+
+   예를 들어, 전체 상태가 _Open_인 `Travel` 레코드를 선택하고 액션 버튼 _**Accept Travel**_ 또는 _**Reject Travel**_ 을 누릅니다. 전체 상태는 이제 _**Accepted**_ 또는 _**Rejected**_ 가 되어야 합니다.
+
    ![Travel App Preview](images/preview9.png)
 
 </details>
-           
-           
-## Summary
-[^Top of page](#introduction)
 
-Now that you've... 
-- defined different types of instance actions in the behavior definition - i.e simple action, action with input parameter, and factory action, 
-- implement them in the behavior implementation, 
-- expose them on the BO projection layer, i.e. behavior projection and metadata extension, and 
-- preview and test the enhanced Fiori elements app,
 
-you can continue with the next exercise – **\[Optional\] [Exercise 7: Enhance the BO Behavior – Dynamic Feature Control](../ex07/README.md)**
+## 요약
+[^맨 위로](#introduction)
+
+이제 여러분은...
+- Behavior Definition에서 다양한 유형의 인스턴스 액션(단순 액션, 입력 파라미터가 있는 액션, factory action)을 정의하고,
+- Behavior Implementation에서 이를 구현하고,
+- BO Projection 레이어(Behavior Projection 및 Metadata Extension)에 노출하고,
+- 향상된 Fiori elements 앱을 미리 보고 테스트했습니다.
+
+다음 연습문제인 **[선택사항] [연습문제 7: BO 기능 개선 – Dynamic Feature Control](../ex07/README.md)** 로 계속 진행할 수 있습니다.
 
 ---
 <!--
@@ -839,7 +837,7 @@ Find the source code for the behavior definition, the behavior implementation cl
 
 > ℹ **Please note**:  
 > The solution comprises the implementation of all four actions, i.e. `deductDiscount`, `copyTravel`, `acceptTravel`, and `rejectTravel`.           
-           
+
 - ![document](images/doc.png) [CDS BDEF ZRAP100_R_TRAVELTP_###](sources/EX6_BDEF_ZRAP100_R_TRAVELTP.txt)
 - ![document](images/doc.png) [Class ZRAP100_BP_TRAVELTP_###](sources/EX6_CLASS_ZRAP100_BP_TRAVELTP.txt)
 - ![document](images/doc.png) [CDS BDEF ZRAP100_C_TRAVELTP_###](sources/EX6_BDEF_ZRAP100_C_TRAVELTP.txt)
