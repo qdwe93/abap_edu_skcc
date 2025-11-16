@@ -309,7 +309,7 @@
    | **Object Name**               |  **Description**         |
    |:----------------------------- |:------------------------ |
    | ![ddls icon](images/adt_ddls.png)**`ZRAP100_C_TravelTP_###`**   | _**BO projection view**_: root entity _Travel_ 의 projected data model을 정의하는 **data definition** 입니다. view annotation `@Metadata.allowExtensions: true`을 추가하면 metadata extension을 정의하여 사용할 수 있습니다.  |
-   | ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TravelTP_###`**   | _**BO behavior projection**_: 이 **behavior definition**은 키워드 **`use`** 를 사용하여 현재 시나리오와 관련된 기본 base _Travel_ BO entity의 일부를 노출합니다. 현재 모든 표준 CUD 작업이 노출됩니다.  |
+   | ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TravelTP_###`**   | _**BO behavior projection**_: 키워드 **`use`** 를 사용하여 기본 base _Travel_ BO entity의 어떤 기능을 사용할지 결정하는 **behavior definition** 입니다. 여기서는 모든 표준 CUD 작업을 사용합니다.  |
    | ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TravelTP_###`**   | _**metadata extension**_: CDS annotation을 통해 view `ZRAP100_C_TRAVEL_###` 의 구성요소에 대한 UI semantics (=Fiori 에서 어떻게 표시할지) 을 정의합니다. |
 
 ---
