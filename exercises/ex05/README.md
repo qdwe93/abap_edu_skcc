@@ -30,7 +30,7 @@ Validation의 트리거 조건이 충족되면 비즈니스 오브젝트의 프�
 
 > **추가 정보**: [Validations](https://help.sap.com/viewer/923180ddb98240829d935862025004d6/Cloud/en-US/171e26c36cca42699976887b4c8a83bf.html)
 
-## 연습 5.1: Validation `validateCustomer` 및 `validateDates` 정의
+## Exercise 5.1: Validation `validateCustomer` 및 `validateDates` 정의
 [^맨 위로](#)
 
 > `validateCustomer`와 `validateDates` validation을 정의합니다.
@@ -105,7 +105,7 @@ Validation의 트리거 조건이 충족되면 비즈니스 오브젝트의 프�
 
 </details>
 
-## 연습 5.2: Validation `validateCustomer` 구현
+## Exercise 5.2: Validation `validateCustomer` 구현
 [^맨 위로](#)
 
 > 소비자가 입력한 고객 ID(`CustomerID`)가 유효한지 확인하는 `validateCustomer` validation을 구현합니다.
@@ -210,7 +210,7 @@ Validation의 트리거 조건이 충족되면 비즈니스 오브젝트의 프�
 
 </details>
 
-## 연습 5.3: Validation `validateDates` 구현
+## Exercise 5.3: Validation `validateDates` 구현
 [^맨 위로](#)
 
 > 입력된 시작일(`BeginDate`)과 종료일(`EndDate`)의 유효성을 확인하는 `validateDates` validation을 구현합니다.
@@ -296,7 +296,7 @@ Validation의 트리거 조건이 충족되면 비즈니스 오브젝트의 프�
 
 </details>
 
-## 연습 5.4: 개선된 Travel 앱 미리보기 및 테스트
+## Exercise 5.4: 개선된 Travel 앱 미리보기 및 테스트
 [^맨 위로](#)
 
 이제 SAP Fiori elements 앱을 테스트할 수 있습니다.
