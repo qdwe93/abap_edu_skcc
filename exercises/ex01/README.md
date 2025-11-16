@@ -296,10 +296,10 @@
 
    | **Object Name**               |  **Description**         |
    |:----------------------------- |:------------------------ |
-   | ![ddls icon](images/adt_ddls.png)**`ZRAP100_R_TravelTP_###`**     | (일명 _Base BO view_): 이 **data definition**은 우리 business object의 유일한 노드인 root entity _Travel_ 의 데이터 모델을 정의합니다.  |
-   | ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TravelTP_###`**   | (일명 _Base BO behavior): 이 **behavior definition**은 base _Travel_ BO entity의 표준 transactional behavior의 정의를 포함합니다. 이것은 _managed_ 및 _draft-enabled_ 구현입니다.  |
-   | ![tabl icon](images/adt_tabl.png)**`ZRAP100_DTRAV###`**   | (일명 _Draft table_): 이 **database table**은 런타임에 draft _travel_ 인스턴스의 데이터를 임시로 저장하는 데 사용됩니다. RAP 프레임워크에 의해 관리됩니다.    |
-   | ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**  | (일명 _Behavior pool_): 이 **ABAP class**는 base _Travel_ BO의 behavior definition `ZRAP100_R_TravelTP_###`에 정의된 behavior의 구현을 제공합니다.   |
+   | ![ddls icon](images/adt_ddls.png)**`ZRAP100_R_TravelTP_###`**     | _**Base BO view**_: 비즈니스 객체의 유일한 노드인 root entity _Travel_ 의 데이터 모델을 정의하는 **data definition** 입니다.  |
+   | ![bdef icon](images/adt_bdef.png)**`ZRAP100_R_TravelTP_###`**   | _**Base BO behavior**_: base _Travel_ BO entity의 표준 transactional behavior를 정의하는 **behavior definition** 입니다. _managed_ 및 _draft-enabled_ 방식으로 구현됩니다.  |
+   | ![class icon](images/adt_class.png)**`ZRAP100_BP_TRAVELTP_###`**  | _**Behavior pool**_: 위에서 정의한 `ZRAP100_R_TravelTP_###` (Base BO behavior) 의 기능을 구현하는 **ABAP class** 입니다.  |
+   | ![tabl icon](images/adt_tabl.png)**`ZRAP100_DTRAV###`**   | _**Draft table**_: 런타임에 draft _travel_ 인스턴스의 데이터를 임시로 저장하는 **database table** 입니다. RAP 프레임워크가 관리합니다.  |
 
 ---
   **BO Projection `ZRAP100_C_TRAVEL_###`**
@@ -308,9 +308,9 @@
 
    | **Object Name**               |  **Description**         |
    |:----------------------------- |:------------------------ |
-   | ![ddls icon](images/adt_ddls.png)**`ZRAP100_C_TravelTP_###`**   | (일명 _BO projection view_): 이 **data definition**은 현재 시나리오와 관련된 root entity _Travel_ 의 projected data model을 정의하는 데 사용됩니다. 현재 기본 base BO view의 거의 모든 필드가 노출되어 있으며, view annotation `@Metadata.allowExtensions: true`를 사용하여 metadata extension의 정의가 허용됩니다.  |
-   | ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TravelTP_###`**   | (일명 _BO behavior projection_): 이 **behavior definition**은 키워드 **`use`** 를 사용하여 현재 시나리오와 관련된 기본 base _Travel_ BO entity의 일부를 노출합니다. 현재 모든 표준 CUD 작업이 노출됩니다.  |
-   | ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TravelTP_###`**   | 이 **metadata extension**은 CDS annotation을 통해 view `ZRAP100_C_TRAVEL_###` 및 그 요소에 UI 시맨틱을 주석으로 다는 데 사용됩니다. |
+   | ![ddls icon](images/adt_ddls.png)**`ZRAP100_C_TravelTP_###`**   | _**BO projection view**_: root entity _Travel_ 의 projected data model을 정의하는 **data definition** 입니다. view annotation `@Metadata.allowExtensions: true`을 추가하면 metadata extension을 정의하여 사용할 수 있습니다.  |
+   | ![bdef icon](images/adt_bdef.png)**`ZRAP100_C_TravelTP_###`**   | _**BO behavior projection**_: 이 **behavior definition**은 키워드 **`use`** 를 사용하여 현재 시나리오와 관련된 기본 base _Travel_ BO entity의 일부를 노출합니다. 현재 모든 표준 CUD 작업이 노출됩니다.  |
+   | ![ddlx icon](images/adt_ddlx.png)**`ZRAP100_C_TravelTP_###`**   | _**metadata extension**_: CDS annotation을 통해 view `ZRAP100_C_TRAVEL_###` 의 구성요소에 대한 UI semantics (=Fiori 에서 어떻게 표시할지) 을 정의합니다. |
 
 ---
   **Business Service**
